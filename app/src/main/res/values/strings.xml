@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">My first App</string>
+    <string name="button_main">Добавить покупку</string>
+</resources>
