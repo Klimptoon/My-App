@@ -9,7 +9,9 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.RecyclerHolder> {
 
     class RecyclerHolder(item : View) : RecyclerView.ViewHolder(item) {
         val binding = RecyclerItemBinding.bind(item)
+        fun fin() {
 
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerHolder {
