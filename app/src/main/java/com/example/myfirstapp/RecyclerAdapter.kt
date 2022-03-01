@@ -1,29 +1,47 @@
 package com.example.myfirstapp
 
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myfirstapp.databinding.RecyclerItemBinding
 
-class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.RecyclerHolder> {
+class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.RecyclerHolder>() {
+
+    private val limit = 6
+
+    val purchaseList = ArrayList<Purchase>()
 
     class RecyclerHolder(item : View) : RecyclerView.ViewHolder(item) {
         val binding = RecyclerItemBinding.bind(item)
-        fun fin() {
-
+        fun init(purchase: Purchase) = with(binding) {
+            circle.setImageResource(purchase.imageId)
+            textRecycler.text = "${purchase.title} - ${purchase.cost}"
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerHolder {
-        TODO("Not yet implemented")
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.recycler_item, parent, false)
+        return RecyclerHolder(view)
     }
 
     override fun onBindViewHolder(holder: RecyclerHolder, position: Int) {
-        TODO("Not yet implemented")
+        holder.init(purchaseList[position])
     }
 
     override fun getItemCount(): Int {
-        TODO("Not yet implemented")
+        if(purchaseList.size > limit) {
+            return limit
+        }
+        else
+        {
+            return purchaseList.size
+        }
+    }
+
+    fun addPurchase(purchase: Purchase) {
+        purchaseList.add(purchase)
+        notifyDataSetChanged()
     }
 
 }
