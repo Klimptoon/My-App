@@ -8,7 +8,7 @@ import com.example.myfirstapp.databinding.RecyclerItemBinding
 
 class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.RecyclerHolder>() {
 
-    private val limit = 6
+    private val limit = 5
 
     val purchaseList = ArrayList<Purchase>()
 

@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">My first App</string>
     <string name="button_main">Добавить покупку</string>
+    <string name="hint1">Введите название</string>
+    <string name="hint2">Введите цену</string>
+    <string name="button_accept">Подтвердить</string>
+    <string name="info">Заполните все поля</string>
+    <string name="confirm">Confirm</string>
+    <string name="empty">Value is empty!</string>
 </resources>
