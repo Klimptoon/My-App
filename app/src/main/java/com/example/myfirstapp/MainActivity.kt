@@ -4,7 +4,9 @@ import android.content.DialogInterface
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
+import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.myfirstapp.databinding.ActivityMainBinding
@@ -13,6 +15,11 @@ import com.example.myfirstapp.databinding.PurchaseInputBinding
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding : ActivityMainBinding
+
+    private var binding2 = null
+
+
+
     private val adapter = RecyclerAdapter()
     private val imageIdList = listOf(R.drawable.circle_shape_red
         , R.drawable.circle_shape_blue
@@ -27,8 +34,14 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         binding.buttonAdd.setOnClickListener {
             showAlertDialog()
+
         }
     }
+
+
+
+
+
 
 
     private fun start() {
@@ -46,6 +59,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun showAlertDialog() {
         val dialogBinding = PurchaseInputBinding.inflate(layoutInflater)
+
+        val purchaseTypes = resources.getStringArray(R.array.types)
+        val arrayAdapter = ArrayAdapter(this, R.layout.dropdown_item, purchaseTypes)
+        dialogBinding.autoCompleteTextView.setAdapter(arrayAdapter)
 
         val dialog = AlertDialog.Builder(this)
             .setTitle(R.string.info)

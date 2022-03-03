@@ -7,4 +7,14 @@
     <string name="info">Заполните все поля</string>
     <string name="confirm">Confirm</string>
     <string name="empty">Value is empty!</string>
+
+
+    <string-array name="types">
+        <item>Еда</item>
+        <item>Одежда</item>
+        <item>Развлечения</item>
+        <item>Дом</item>
+        <item>Прочее</item>
+    </string-array>
+
 </resources>
