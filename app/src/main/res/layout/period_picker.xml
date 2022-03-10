@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <Button
+        android:id="@+id/button_today"
+        android:layout_width="110dp"
+        android:layout_height="65dp"
+        android:drawableTop="@drawable/down_arrow_white"
+        android:text="@string/day"
+        android:textSize="10sp"
+        android:backgroundTint="@color/teal_700"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineCenter"
+        app:layout_constraintTop_toTopOf="parent" />
+    <Button
+        android:id="@+id/button_week"
+        android:layout_width="110dp"
+        android:layout_height="65dp"
+        android:drawableTop="@drawable/down_arrow_white"
+        android:text="@string/week"
+        android:textSize="10sp"
+        android:backgroundTint="@color/teal_700"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/guidelineCenter"
+        app:layout_constraintTop_toTopOf="parent" />
+    <Button
+        android:id="@+id/button_month"
+        android:layout_width="110dp"
+        android:layout_height="65dp"
+        android:drawableTop="@drawable/down_arrow_white"
+        android:text="@string/day"
+        android:textSize="10sp"
+        android:backgroundTint="@color/teal_700"
+        app:layout_constraintEnd_toStartOf="@+id/guidelineCenter"
+        app:layout_constraintTop_toBottomOf="@id/button_today" />
+    <Button
+        android:id="@+id/button_year"
+        android:layout_width="110dp"
+        android:layout_height="65dp"
+        android:drawableTop="@drawable/down_arrow_white"
+        android:text="@string/year"
+        android:textSize="10sp"
+        android:backgroundTint="@color/teal_700"
+        app:layout_constraintStart_toEndOf="@+id/guidelineCenter"
+        app:layout_constraintTop_toBottomOf="@id/button_week" />
+
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:background="@color/teal_700"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:text="@string/period"
+        app:layout_constraintBottom_toTopOf="@+id/guidelineHorizontal"
+        app:layout_constraintEnd_toEndOf="@+id/button_week"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/button_today"
+        app:layout_constraintVertical_bias="0.367" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineCenter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guidelineHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.46" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

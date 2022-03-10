@@ -5,10 +5,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
 import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myfirstapp.databinding.ActivityMainBinding
+import com.example.myfirstapp.databinding.PeriodPickerBinding
 import com.example.myfirstapp.databinding.PurchaseInputBinding
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,16 +40,70 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+
+        startMainSpinner()
+
         binding.buttonAdd.setOnClickListener {
             showAlertDialog()
         }
+        binding.textViewDate.text = getCurrentDateDay()
+
+        binding.alertToolBar.setOnClickListener {
+            showAlertDialogForTime()
+        }
+
+
 
     }
 
 
 
-    private fun start() {
+    private fun startMainSpinner() {
+        val purchaseTypes = resources.getStringArray(R.array.types)
+        val arrayAdapter = ArrayAdapter(this@MainActivity, R.layout.dropdown_item, purchaseTypes)
+        binding.autoCompleteTextViewMain.setAdapter(arrayAdapter)
+    }
 
+    private fun getCurrentDateDay():String{
+        val sdf = SimpleDateFormat("dd, MMM yyyy")
+        return sdf.format(Date())
+    }
+
+
+
+
+
+    private fun showAlertDialogForTime() {
+        val dialogBinding = PeriodPickerBinding.inflate(layoutInflater)
+
+        val dialog = AlertDialog.Builder(this)
+            .setView(dialogBinding.root)
+            .create()
+        dialog.setOnShowListener {
+            dialogBinding.buttonToday.setOnClickListener {
+                dialog.dismiss()
+                binding.textViewDate.text = getCurrentDateDay()
+            }
+            dialogBinding.buttonWeek.setOnClickListener {
+                dialog.dismiss()
+                val date = getCurrentDateDay().substringBefore(',').toInt() + 7
+                val sdf = SimpleDateFormat("dd - $date , MMM yyyy")
+                binding.textViewDate.text = sdf.format(Date())
+            }
+            dialogBinding.buttonMonth.setOnClickListener {
+                dialog.dismiss()
+                val sdf = SimpleDateFormat("MMM yyyy")
+                binding.textViewDate.text = sdf.format(Date())
+            }
+            dialogBinding.buttonYear.setOnClickListener {
+                dialog.dismiss()
+                val sdf = SimpleDateFormat("yyyy ГОД")
+                binding.textViewDate.text = sdf.format(Date())
+            }
+
+        }
+        dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+        dialog.show()
     }
 
     private fun showAlertDialog() {
