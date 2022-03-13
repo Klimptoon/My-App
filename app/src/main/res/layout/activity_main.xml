@@ -12,6 +12,7 @@
 
 
     <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/spinner_type"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -112,14 +113,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.4131327" />
+        app:layout_constraintGuide_percent="0.41" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:layout_marginBottom="30dp"
+        app:layout_constraintBottom_toTopOf="@+id/buttonAdd"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guidlineTop" />
+        app:layout_constraintTop_toBottomOf="@+id/spinner_type" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

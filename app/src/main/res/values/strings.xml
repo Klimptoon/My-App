@@ -9,6 +9,7 @@
     <string name="empty">Value is empty!</string>
     <string name="all_time">Все время</string>
     <string name="week">Неделя</string>
+    <string name="month">Месяц</string>
     <string name="day">Сегодня</string>
     <string name="year">Год</string>
     <string name="period">Выберите период</string>

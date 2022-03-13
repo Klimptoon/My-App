@@ -58,13 +58,13 @@ class MainActivity : AppCompatActivity() {
 
 
 
-    private fun startMainSpinner() {
+    private fun startMainSpinner() {                                   //Функция для выбора типа покупки
         val purchaseTypes = resources.getStringArray(R.array.types)
         val arrayAdapter = ArrayAdapter(this@MainActivity, R.layout.dropdown_item, purchaseTypes)
         binding.autoCompleteTextViewMain.setAdapter(arrayAdapter)
     }
 
-    private fun getCurrentDateDay():String{
+    private fun getCurrentDateDay():String{                         // Функция для получения даты
         val sdf = SimpleDateFormat("dd, MMM yyyy")
         return sdf.format(Date())
     }
@@ -73,7 +73,7 @@ class MainActivity : AppCompatActivity() {
 
 
 
-    private fun showAlertDialogForTime() {
+    private fun showAlertDialogForTime() {                           // алерт диалог для выбора периода времени
         val dialogBinding = PeriodPickerBinding.inflate(layoutInflater)
 
         val dialog = AlertDialog.Builder(this)
@@ -106,7 +106,7 @@ class MainActivity : AppCompatActivity() {
         dialog.show()
     }
 
-    private fun showAlertDialog() {
+    private fun showAlertDialog() {                                            //Алерт диалог с ресайклером
         val dialogBinding = PurchaseInputBinding.inflate(layoutInflater)
 
         val purchaseTypes = resources.getStringArray(R.array.types)
