@@ -10,7 +10,7 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.RecyclerHolder>() {
 
     private val limit = 100
 
-    val purchaseList = ArrayList<Purchase>()
+    val purchaseList = mutableListOf<Purchase>()
 
     class RecyclerHolder(item : View) : RecyclerView.ViewHolder(item) {
         val binding = RecyclerItemBinding.bind(item)
