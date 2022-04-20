@@ -29,7 +29,7 @@
             android:layout_weight="1"
             android:inputType="none"
             android:background="@color/white"
-            android:text="Одежда"
+            android:text="Все"
             android:hint="Тип покупки"
              />
     </com.google.android.material.textfield.TextInputLayout>

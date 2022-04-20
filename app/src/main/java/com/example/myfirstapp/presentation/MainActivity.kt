@@ -1,11 +1,12 @@
 package com.example.myfirstapp.presentation
 
+import android.R.attr.data
 import android.content.DialogInterface
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.WindowManager
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myfirstapp.R
 import com.example.myfirstapp.databinding.ActivityMainBinding
@@ -14,6 +15,7 @@ import com.example.myfirstapp.databinding.PurchaseInputBinding
 import com.example.myfirstapp.domain.PurchaseUsecase
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -50,8 +52,10 @@ class MainActivity : AppCompatActivity() {
             showAlertDialogForTime()
         }
         setData()
-
-
+        when(binding.autoCompleteTextViewMain.text.toString()) {
+            adapter.clear()
+            "Еда" -> sortFood()
+        }
     }
 
 
@@ -157,5 +161,18 @@ class MainActivity : AppCompatActivity() {
     fun setData() {
         val purchaseUsecase = PurchaseUsecase()
         adapter.setData(purchaseUsecase.getData())
+
     }
+    fun sortFood()  {
+        val purchaseUsecase = PurchaseUsecase()
+        val purchaseList = purchaseUsecase.getData()
+        val listOfFood = mutableListOf<Purchase>()
+        for(purchase in purchaseList) {
+            if(purchase.type == "Еда") {
+                listOfFood.add(purchase)
+            }
+        }
+        adapter.setData(listOfFood)
+    }
+
 }

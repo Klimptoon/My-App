@@ -46,5 +46,10 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.RecyclerHolder>() {
         purchaseList.addAll(purchseList)
         notifyDataSetChanged()
     }
+    fun clear() {
+        val size: Int = purchaseList.size
+        purchaseList.clear()
+        notifyItemRangeRemoved(0, size)
+    }
 
 }
