@@ -3,8 +3,11 @@ package com.example.myfirstapp.presentation
 import android.R.attr.data
 import android.content.DialogInterface
 import android.os.Bundle
+import android.view.View
 import android.view.WindowManager
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -40,6 +43,8 @@ class MainActivity : AppCompatActivity() {
         binding.rv.layoutManager = GridLayoutManager(this@MainActivity, 1)
         binding.rv.adapter = adapter
 
+        setData()
+
 
         startMainSpinner()
 
@@ -51,18 +56,49 @@ class MainActivity : AppCompatActivity() {
         binding.alertToolBar.setOnClickListener {
             showAlertDialogForTime()
         }
-        setData()
-        when(binding.autoCompleteTextViewMain.text.toString()) {
-            adapter.clear()
-            "Еда" -> sortFood()
+
+
+
+    }
+
+
+    private fun startSpin() {
+
+        var adapter = ArrayAdapter.createFromResource(this,R.array.types, android.R.layout.simple_spinner_item)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.spinner1.adapter = adapter
+        binding.spinner1.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                  when(p2) {
+                      0 -> setData()
+                      1 -> setData()
+                      2 -> sortFood()
+                  }
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                TODO("Not yet implemented")
+            }
+
         }
+
     }
 
 
     private fun startMainSpinner() {                                   //Функция для выбора типа покупки
         val purchaseTypes = resources.getStringArray(R.array.types)
         val arrayAdapter = ArrayAdapter(this@MainActivity, R.layout.dropdown_item, purchaseTypes)
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.autoCompleteTextViewMain.setAdapter(arrayAdapter)
+        binding.autoCompleteTextViewMain.onItemClickListener  = object : AdapterView.OnItemClickListener {
+            override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                when(p2) {
+                    0 -> setData()
+                    1 -> setData()
+                    2 -> sortFood()
+                }
+            }
+        }
     }
 
     private fun getCurrentDateDay(): String {                         // Функция для получения даты
@@ -172,7 +208,9 @@ class MainActivity : AppCompatActivity() {
                 listOfFood.add(purchase)
             }
         }
+        adapter.clear()
         adapter.setData(listOfFood)
     }
+
 
 }

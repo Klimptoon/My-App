@@ -7,9 +7,16 @@
     tools:context=".presentation.MainActivity">
 
 
-
-
-
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.357" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/spinner_type"
@@ -25,13 +32,12 @@
             android:id="@+id/autoCompleteTextViewMain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
             android:layout_weight="1"
-            android:inputType="none"
             android:background="@color/white"
-            android:text="Все"
             android:hint="Тип покупки"
-             />
+            android:inputType="none"
+            android:text="Все"
+            android:textSize="15sp" />
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -93,6 +99,7 @@
          />
 
     <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="ТУТ БУДЕТ ДИАГРАММА"
