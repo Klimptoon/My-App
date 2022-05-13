@@ -10,7 +10,6 @@ import com.example.myfirstapp.databinding.RecyclerItemBinding
 
 class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.RecyclerHolder>() {
 
-    private val limit = 100
 
     val purchaseList = ArrayList<Purchase>()
 
@@ -43,12 +42,12 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.RecyclerHolder>() {
     }
 
     fun setData(purchseList: List<Purchase>) {
+        purchaseList.clear()
         purchaseList.addAll(purchseList)
         notifyDataSetChanged()
     }
-    fun clear() {
-        purchaseList.clear()
-        notifyDataSetChanged()
-    }
+
+
+
 
 }
