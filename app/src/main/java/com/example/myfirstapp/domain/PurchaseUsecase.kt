@@ -6,8 +6,20 @@ import com.example.myfirstapp.presentation.Purchase
 class PurchaseUsecase {
     val purchaseRepository = PurchaseRepository()
 
-    fun getData() : List<Purchase> {
+    fun getData(type : String) : List<Purchase> {
+        val purchaseList = purchaseRepository.getData()
+        val listOfType = mutableListOf<Purchase>()
+        for (purchase in purchaseList) {
+            if(purchase.type == type) {
+                listOfType.add(purchase)
+            }
+        }
+        return listOfType
+    }
+    fun getStartData() : List<Purchase> {
         return purchaseRepository.getData()
     }
+
+
 
 }

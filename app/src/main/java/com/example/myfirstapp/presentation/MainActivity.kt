@@ -273,59 +273,29 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun setData(): List<Purchase> {
-        return purchaseUsecase.getData()
+        return purchaseUsecase.getStartData()
     }
 
     fun sortFood() : List<Purchase> {
-        val purchaseList = purchaseUsecase.getData()
-        val listOfFood = mutableListOf<Purchase>()
-        for(purchase in purchaseList) {
-            if(purchase.type == "Еда") {
-                listOfFood.add(purchase)
-            }
-        }
-        return listOfFood
+        return purchaseUsecase.getData("Еда")
     }
-    fun sortClothes() : List<Purchase> {
-        val purchaseList = purchaseUsecase.getData()
-        val listOfClothes = mutableListOf<Purchase>()
-        for(purchase in purchaseList) {
-            if(purchase.type == "Одежда") {
-                listOfClothes.add(purchase)
-            }
-        }
-        return listOfClothes
+
+    fun sortClothes(): List<Purchase> {
+        return purchaseUsecase.getData("Одежда")
     }
+
     fun sortRest() : List<Purchase> {
-        val purchaseList = purchaseUsecase.getData()
-        val listOfRest = mutableListOf<Purchase>()
-        for(purchase in purchaseList) {
-            if(purchase.type == "Отдых") {
-                listOfRest.add(purchase)
-            }
-        }
-        return listOfRest
+        return purchaseUsecase.getData("Отдых")
     }
+
     fun sortHouse() : List<Purchase> {
-        val purchaseList = purchaseUsecase.getData()
-        val listOfHouse = mutableListOf<Purchase>()
-        for(purchase in purchaseList) {
-            if(purchase.type == "Дом") {
-                listOfHouse.add(purchase)
-            }
-        }
-        return listOfHouse
+        return purchaseUsecase.getData("Дом")
     }
+
     fun sortOther() : List<Purchase>  {
-        val purchaseList = purchaseUsecase.getData()
-        val listOfOther = mutableListOf<Purchase>()
-        for(purchase in purchaseList) {
-            if(purchase.type == "Прочее") {
-                listOfOther.add(purchase)
-            }
-        }
-        return listOfOther
+        return purchaseUsecase.getData("Прочее")
     }
+
     fun sortToday(purchaseList : List<Purchase>)  {
         val sdf = SimpleDateFormat("dd.MM.yyyy")
         val listOfPurchase = mutableListOf<Purchase>()
