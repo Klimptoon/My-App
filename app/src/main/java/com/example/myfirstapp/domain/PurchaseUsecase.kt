@@ -7,15 +7,20 @@ class PurchaseUsecase {
     val purchaseRepository = PurchaseRepository()
 
     fun getData(type : String) : List<Purchase> {
-        val purchaseList = purchaseRepository.getData()
-        val listOfType = mutableListOf<Purchase>()
-        for (purchase in purchaseList) {
-            if(purchase.type == type) {
-                listOfType.add(purchase)
+        return if(type == "Все") {
+            getStartData()
+        } else {
+            val purchaseList = purchaseRepository.getData()
+            val listOfType = mutableListOf<Purchase>()
+            for (purchase in purchaseList) {
+                if (purchase.type == type) {
+                    listOfType.add(purchase)
+                }
             }
+            listOfType
         }
-        return listOfType
     }
+
     fun getStartData() : List<Purchase> {
         return purchaseRepository.getData()
     }

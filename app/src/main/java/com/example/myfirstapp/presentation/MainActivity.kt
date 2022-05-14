@@ -6,6 +6,7 @@ import android.view.View
 import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -34,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     var costPurchase: String = ""
 
 
-    private val adapter = RecyclerAdapter()
+    private val adapter = PurchaseAdapter()
 
     private var counter = 0
 
@@ -70,110 +71,7 @@ class MainActivity : AppCompatActivity() {
         binding.autoCompleteTextViewMain.setAdapter(arrayAdapter)
         binding.autoCompleteTextViewMain.onItemClickListener  = object : AdapterView.OnItemClickListener {
             override fun onItemClick(adapterView: AdapterView<*>?, view : View?, position: Int, item_id: Long) {
-                when(position) {
-                    0 -> {
-                        val sortedList = setData()
-                        when (binding.textViewDate.text) {
-                            getCurrentDateDay() -> {
-                                sortToday(sortedList)
-                            }
-                            sdfWeek.format(Date()).toString() -> {
-                                sortWeek(sortedList)
-                            }
-                            sdfMonth.format(Date()).toString() -> {
-                                sortMonth(sortedList)
-                            }
-                            sdfYear.format(Date()).toString() -> {
-                                sortYear(sortedList)
-                            }
-                        }
-                    }
-                    1 -> {
-                        val sortedList = sortClothes()
-                        when (binding.textViewDate.text) {
-                            getCurrentDateDay() -> {
-                                sortToday(sortedList)
-                            }
-                            sdfWeek.format(Date()).toString() -> {
-                                sortWeek(sortedList)
-                            }
-                            sdfMonth.format(Date()).toString() -> {
-                                sortMonth(sortedList)
-                            }
-                            sdfYear.format(Date()).toString() -> {
-                                sortYear(sortedList)
-                            }
-                        }
-                    }
-                    2 -> {
-                        val sortedList = sortFood()
-                        when (binding.textViewDate.text) {
-                            getCurrentDateDay() -> {
-                                sortToday(sortedList)
-                            }
-                            sdfWeek.format(Date()).toString() -> {
-                                sortWeek(sortedList)
-                            }
-                            sdfMonth.format(Date()).toString() -> {
-                                sortMonth(sortedList)
-                            }
-                            sdfYear.format(Date()).toString() -> {
-                                sortYear(sortedList)
-                            }
-                        }
-                    }
-                    3 -> {
-                        val sortedList = sortRest()
-                        when (binding.textViewDate.text) {
-                            getCurrentDateDay() -> {
-                                sortToday(sortedList)
-                            }
-                            sdfWeek.format(Date()).toString() -> {
-                                sortWeek(sortedList)
-                            }
-                            sdfMonth.format(Date()).toString() -> {
-                                sortMonth(sortedList)
-                            }
-                            sdfYear.format(Date()).toString() -> {
-                                sortYear(sortedList)
-                            }
-                        }
-                    }
-                    4 -> {
-                        val sortedList = sortHouse()
-                        when (binding.textViewDate.text) {
-                            getCurrentDateDay() -> {
-                                sortToday(sortedList)
-                            }
-                            sdfWeek.format(Date()).toString() -> {
-                                sortWeek(sortedList)
-                            }
-                            sdfMonth.format(Date()).toString() -> {
-                                sortMonth(sortedList)
-                            }
-                            sdfYear.format(Date()).toString() -> {
-                                sortYear(sortedList)
-                            }
-                        }
-                    }
-                    5 -> {
-                        val sortedList = sortOther()
-                        when (binding.textViewDate.text) {
-                            getCurrentDateDay() -> {
-                                sortToday(sortedList)
-                            }
-                            sdfWeek.format(Date()).toString() -> {
-                                sortWeek(sortedList)
-                            }
-                            sdfMonth.format(Date()).toString() -> {
-                                sortMonth(sortedList)
-                            }
-                            sdfYear.format(Date()).toString() -> {
-                                sortYear(sortedList)
-                            }
-                        }
-                    }
-                }
+                whenForItemClick(purchaseTypes)
             }
         }
     }
@@ -272,29 +170,17 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun setData(): List<Purchase> {
+    fun setData(): List<Purchase> {                       //функция для установления первых данных после открытия приложения
         return purchaseUsecase.getStartData()
     }
 
-    fun sortFood() : List<Purchase> {
-        return purchaseUsecase.getData("Еда")
+
+    fun sortByType(type : String): List<Purchase> {         //функция с сортировко по типу покупки
+        return purchaseUsecase.getData(type)
     }
 
-    fun sortClothes(): List<Purchase> {
-        return purchaseUsecase.getData("Одежда")
-    }
 
-    fun sortRest() : List<Purchase> {
-        return purchaseUsecase.getData("Отдых")
-    }
 
-    fun sortHouse() : List<Purchase> {
-        return purchaseUsecase.getData("Дом")
-    }
-
-    fun sortOther() : List<Purchase>  {
-        return purchaseUsecase.getData("Прочее")
-    }
 
     fun sortToday(purchaseList : List<Purchase>)  {
         val sdf = SimpleDateFormat("dd.MM.yyyy")
@@ -339,6 +225,52 @@ class MainActivity : AppCompatActivity() {
             }
         }
         adapter.setData(listOfPurchase)
+    }
+
+    fun whenData(sortedList : List<Purchase>) {                     //функция для вызова сортировок по типу выбранного периода даты
+        when (binding.textViewDate.text) {
+            getCurrentDateDay() -> {
+                sortToday(sortedList)
+            }
+            sdfWeek.format(Date()).toString() -> {
+                sortWeek(sortedList)
+            }
+            sdfMonth.format(Date()).toString() -> {
+                sortMonth(sortedList)
+            }
+            sdfYear.format(Date()).toString() -> {
+                sortYear(sortedList)
+            }
+        }
+    }
+
+    fun whenForItemClick(purchaseTypes : Array<String>) {
+        when(binding.autoCompleteTextViewMain.text.toString()) {
+            purchaseTypes[0] -> {
+                val sortedList = sortByType(purchaseTypes[0])
+                whenData(sortedList)
+            }
+            purchaseTypes[1] -> {
+                val sortedList = sortByType(purchaseTypes[1])
+                whenData(sortedList)
+            }
+            purchaseTypes[2] -> {
+                val sortedList = sortByType(purchaseTypes[2])
+                whenData(sortedList)
+            }
+            purchaseTypes[3] -> {
+                val sortedList = sortByType(purchaseTypes[3])
+                whenData(sortedList)
+            }
+            purchaseTypes[4] -> {
+                val sortedList = sortByType(purchaseTypes[4])
+                whenData(sortedList)
+            }
+            purchaseTypes[5] -> {
+                val sortedList = sortByType(purchaseTypes[5])
+                whenData(sortedList)
+            }
+        }
     }
 
 }
