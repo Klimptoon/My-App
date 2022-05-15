@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/main"
+        android:icon="@drawable/ic_home"
+        android:title="title1"
+        android:orderInCategory="1"
+        />
+    <item
+        android:id="@+id/exchange_rate"
+        android:icon="@drawable/ic_course"
+        android:title="title2"
+        android:orderInCategory="2"
+        />
+    <item
+        android:id="@+id/settings"
+        android:icon="@drawable/ic_settings"
+        android:title="title3"
+        android:orderInCategory="3"
+        />
+
+
+</menu>

@@ -1,32 +1,41 @@
 package com.example.myfirstapp.presentation
 
 import android.content.DialogInterface
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import android.view.WindowManager
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myfirstapp.R
 import com.example.myfirstapp.databinding.ActivityMainBinding
-import com.example.myfirstapp.databinding.PeriodPickerBinding
+import com.example.myfirstapp.databinding.PeriodBinding
 import com.example.myfirstapp.databinding.PurchaseInputBinding
 import com.example.myfirstapp.domain.PurchaseUsecase
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
 
 
+    val dateWeek = getCurrentDateDay().substringBefore(',').toInt() - 7
+    val sdfWeek = SimpleDateFormat("$dateWeek - dd, MMM yyyy")
+    val sdfMonth = SimpleDateFormat("MMM yyyy")
+    val sdfYear = SimpleDateFormat("yyyy ГОД")
+    val purchaseUsecase = PurchaseUsecase()
     var imageId: Int = 0
     var type: String = ""
     var title: String = ""
     var costPurchase: String = ""
 
 
-    private val adapter = RecyclerAdapter()
+    private val adapter = PurchaseAdapter()
 
     private var counter = 0
 
@@ -38,8 +47,11 @@ class MainActivity : AppCompatActivity() {
         binding.rv.layoutManager = GridLayoutManager(this@MainActivity, 1)
         binding.rv.adapter = adapter
 
+        val listStart = setData()                  //для вывода списка после открытия приложения
+        sortToday(listStart)
 
-        startMainSpinner()
+
+        startMainSpinner()                 //запуск спинера с выбором покупки
 
         binding.buttonAdd.setOnClickListener {
             showAlertDialog()
@@ -49,16 +61,19 @@ class MainActivity : AppCompatActivity() {
         binding.alertToolBar.setOnClickListener {
             showAlertDialogForTime()
         }
-        setData()
-
-
     }
 
 
     private fun startMainSpinner() {                                   //Функция для выбора типа покупки
         val purchaseTypes = resources.getStringArray(R.array.types)
         val arrayAdapter = ArrayAdapter(this@MainActivity, R.layout.dropdown_item, purchaseTypes)
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.autoCompleteTextViewMain.setAdapter(arrayAdapter)
+        binding.autoCompleteTextViewMain.onItemClickListener  = object : AdapterView.OnItemClickListener {
+            override fun onItemClick(adapterView: AdapterView<*>?, view : View?, position: Int, item_id: Long) {
+                whenForItemClick(purchaseTypes)
+            }
+        }
     }
 
     private fun getCurrentDateDay(): String {                         // Функция для получения даты
@@ -68,28 +83,28 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun showAlertDialogForTime() {                           // алерт диалог для выбора периода времени
-        val dialogBinding = PeriodPickerBinding.inflate(layoutInflater)
+        val dialogBinding = PeriodBinding.inflate(layoutInflater)
 
         val dialog = AlertDialog.Builder(this)
             .setView(dialogBinding.root)
             .create()
         dialog.setOnShowListener {
-            dialogBinding.buttonToday.setOnClickListener {
+            dialogBinding.cardDay.setOnClickListener {
                 dialog.dismiss()
                 binding.textViewDate.text = getCurrentDateDay()
             }
-            dialogBinding.buttonWeek.setOnClickListener {
+            dialogBinding.cardWeek.setOnClickListener {
                 dialog.dismiss()
-                val date = getCurrentDateDay().substringBefore(',').toInt() + 7
-                val sdf = SimpleDateFormat("dd - $date , MMM yyyy")
+                val date = getCurrentDateDay().substringBefore(',').toInt() - 7
+                val sdf = SimpleDateFormat("$date - dd, MMM yyyy")
                 binding.textViewDate.text = sdf.format(Date())
             }
-            dialogBinding.buttonMonth.setOnClickListener {
+            dialogBinding.cardMonth.setOnClickListener {
                 dialog.dismiss()
                 val sdf = SimpleDateFormat("MMM yyyy")
                 binding.textViewDate.text = sdf.format(Date())
             }
-            dialogBinding.buttonYear.setOnClickListener {
+            dialogBinding.cardYear.setOnClickListener {
                 dialog.dismiss()
                 val sdf = SimpleDateFormat("yyyy ГОД")
                 binding.textViewDate.text = sdf.format(Date())
@@ -154,8 +169,108 @@ class MainActivity : AppCompatActivity() {
         dialog.show()
 
     }
-    fun setData() {
-        val purchaseUsecase = PurchaseUsecase()
-        adapter.setData(purchaseUsecase.getData())
+
+    fun setData(): List<Purchase> {                       //функция для установления первых данных после открытия приложения
+        return purchaseUsecase.getStartData()
     }
+
+
+    fun sortByType(type : String): List<Purchase> {         //функция с сортировко по типу покупки
+        return purchaseUsecase.getData(type)
+    }
+
+
+
+
+    fun sortToday(purchaseList : List<Purchase>)  {
+        val sdf = SimpleDateFormat("dd.MM.yyyy")
+        val listOfPurchase = mutableListOf<Purchase>()
+        for(purchase in purchaseList) {
+            if(purchase.date == sdf.format(Date())) {
+                listOfPurchase.add(purchase)
+            }
+        }
+        adapter.setData(listOfPurchase)
+    }
+    fun sortWeek(purchaseList : List<Purchase>)  {
+        val sdf = SimpleDateFormat("dd.MM.yyyy")
+        val listOfPurchase = mutableListOf<Purchase>()
+        for(purchase in purchaseList) {
+            if(purchase.date.substringAfter('.') == sdf.format(Date()).substringAfter('.')) {
+                if(purchase.date.substringBefore('.').toInt() in sdf.format(Date()).substringBefore('.').toInt() - 7..sdf.format(Date()).substringBefore('.').toInt()) {
+                    listOfPurchase.add(purchase)
+                }
+            }
+        }
+        adapter.setData(listOfPurchase)
+    }
+    fun sortMonth(purchaseList : List<Purchase>)  {
+        val sdf = SimpleDateFormat("dd.MM.yyyy")
+        val listOfPurchase = mutableListOf<Purchase>()
+        for(purchase in purchaseList) {
+            if(purchase.date.substringAfterLast('.') == sdf.format(Date()).substringAfterLast('.')) {
+                if(purchase.date.substringAfter('.').substringBeforeLast('.').toInt() == sdf.format(Date()).substringAfter('.').substringBeforeLast('.').toInt()) {
+                    listOfPurchase.add(purchase)
+                }
+            }
+        }
+        adapter.setData(listOfPurchase)
+    }
+    fun sortYear(purchaseList : List<Purchase>)  {
+        val sdf = SimpleDateFormat("dd.MM.yyyy")
+        val listOfPurchase = mutableListOf<Purchase>()
+        for(purchase in purchaseList) {
+            if(purchase.date.substringAfterLast('.') == sdf.format(Date()).substringAfterLast('.')) {
+                    listOfPurchase.add(purchase)
+            }
+        }
+        adapter.setData(listOfPurchase)
+    }
+
+    fun whenData(sortedList : List<Purchase>) {                     //функция для вызова сортировок по типу выбранного периода даты
+        when (binding.textViewDate.text) {
+            getCurrentDateDay() -> {
+                sortToday(sortedList)
+            }
+            sdfWeek.format(Date()).toString() -> {
+                sortWeek(sortedList)
+            }
+            sdfMonth.format(Date()).toString() -> {
+                sortMonth(sortedList)
+            }
+            sdfYear.format(Date()).toString() -> {
+                sortYear(sortedList)
+            }
+        }
+    }
+
+    fun whenForItemClick(purchaseTypes : Array<String>) {
+        when(binding.autoCompleteTextViewMain.text.toString()) {
+            purchaseTypes[0] -> {
+                val sortedList = sortByType(purchaseTypes[0])
+                whenData(sortedList)
+            }
+            purchaseTypes[1] -> {
+                val sortedList = sortByType(purchaseTypes[1])
+                whenData(sortedList)
+            }
+            purchaseTypes[2] -> {
+                val sortedList = sortByType(purchaseTypes[2])
+                whenData(sortedList)
+            }
+            purchaseTypes[3] -> {
+                val sortedList = sortByType(purchaseTypes[3])
+                whenData(sortedList)
+            }
+            purchaseTypes[4] -> {
+                val sortedList = sortByType(purchaseTypes[4])
+                whenData(sortedList)
+            }
+            purchaseTypes[5] -> {
+                val sortedList = sortByType(purchaseTypes[5])
+                whenData(sortedList)
+            }
+        }
+    }
+
 }
