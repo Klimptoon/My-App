@@ -1,12 +1,17 @@
-package com.example.myfirstapp.domain
-
+import android.content.Context
+import com.example.myfirstapp.data.PurchaseDao
+import com.example.myfirstapp.data.PurchaseDatabase
 import com.example.myfirstapp.data.PurchaseRepository
 import com.example.myfirstapp.presentation.Purchase
 
-class PurchaseUsecase {
-    val purchaseRepository = PurchaseRepository()
+class PurchaseUsecase(context: Context) {
 
-    fun getData(type : String) : List<Purchase> {
+
+
+    private val dao = PurchaseDatabase.getInstance(context).getPurchaseDao()
+    private val purchaseRepository = PurchaseRepository(dao)
+
+    fun getData(type : String)  : List<Purchase>{
         return if(type == "Все") {
             getStartData()
         } else {
@@ -23,6 +28,10 @@ class PurchaseUsecase {
 
     fun getStartData() : List<Purchase> {
         return purchaseRepository.getData()
+    }
+
+    fun addPurchase(purchase: Purchase) {
+        purchaseRepository.addPurchase(purchase)
     }
 
 

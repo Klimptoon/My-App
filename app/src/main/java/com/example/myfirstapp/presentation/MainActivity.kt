@@ -1,34 +1,37 @@
 package com.example.myfirstapp.presentation
 
+import PurchaseUsecase
 import android.content.DialogInterface
 import android.os.Bundle
 import android.view.View
 import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myfirstapp.R
+import com.example.myfirstapp.data.PurchaseDatabase
 import com.example.myfirstapp.databinding.ActivityMainBinding
 import com.example.myfirstapp.databinding.PeriodBinding
 import com.example.myfirstapp.databinding.PurchaseInputBinding
-import com.example.myfirstapp.domain.PurchaseUsecase
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 class MainActivity : AppCompatActivity() {
 
+
     lateinit var binding: ActivityMainBinding
+    lateinit var appDb : PurchaseDatabase
 
 
+    val currentData = getCurrentDateDay()
     val dateWeek = getCurrentDateDay().substringBefore(',').toInt() - 7
     val sdfWeek = SimpleDateFormat("$dateWeek - dd, MMM yyyy")
     val sdfMonth = SimpleDateFormat("MMM yyyy")
     val sdfYear = SimpleDateFormat("yyyy ГОД")
-    val purchaseUsecase = PurchaseUsecase()
+    val purchaseUsecase = PurchaseUsecase(applicationContext)
     var imageId: Int = 0
     var type: String = ""
     var title: String = ""
@@ -43,9 +46,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         binding.rv.layoutManager = GridLayoutManager(this@MainActivity, 1)
         binding.rv.adapter = adapter
+        appDb = PurchaseDatabase.getInstance(applicationContext)
 
         val listStart = setData()                  //для вывода списка после открытия приложения
         sortToday(listStart)
@@ -157,9 +160,10 @@ class MainActivity : AppCompatActivity() {
                             "Развлечения" -> R.drawable.circle_shape_green
                             "Дом" -> R.drawable.circle_shape_yellow
                             else -> R.drawable.circle_shape_blue
-                        }, type, title, costPurchase
+                        }, type, title, costPurchase, currentData
                     )
                     adapter.addPurchase(purchase)
+                    purchaseUsecase.addPurchase(purchase)
                     counter++
                 }
             }
@@ -175,7 +179,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    fun sortByType(type : String): List<Purchase> {         //функция с сортировко по типу покупки
+    fun sortByType(type : String): List<Purchase> {         //функция с сортировкой по типу покупки
         return purchaseUsecase.getData(type)
     }
 
@@ -244,7 +248,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun whenForItemClick(purchaseTypes : Array<String>) {
+    fun whenForItemClick(purchaseTypes : Array<String>) {                     //функция которая объединяет сортировки по времени и по типу покупки
         when(binding.autoCompleteTextViewMain.text.toString()) {
             purchaseTypes[0] -> {
                 val sortedList = sortByType(purchaseTypes[0])
