@@ -11,11 +11,11 @@ import com.example.myfirstapp.presentation.Purchase
 interface PurchaseDao {
 
     @Insert
-    fun addPurchase(purchase : PurchaseEnt)
+    suspend fun addPurchase(purchase : PurchaseEnt)
 
     @Query("SELECT * FROM purchase_table")
-    fun getData() : List<PurchaseEnt>
+    suspend fun getData() : List<PurchaseEnt>
 
     @Delete
-    fun deletePurchase(purchase: PurchaseEnt)
+    suspend fun deletePurchase(purchase: PurchaseEnt)
 }

@@ -9,12 +9,16 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myfirstapp.R
 import com.example.myfirstapp.data.PurchaseDatabase
 import com.example.myfirstapp.databinding.ActivityMainBinding
 import com.example.myfirstapp.databinding.PeriodBinding
 import com.example.myfirstapp.databinding.PurchaseInputBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -31,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     val sdfWeek = SimpleDateFormat("$dateWeek - dd, MMM yyyy")
     val sdfMonth = SimpleDateFormat("MMM yyyy")
     val sdfYear = SimpleDateFormat("yyyy ГОД")
-    val purchaseUsecase = PurchaseUsecase(applicationContext)
+    val purchaseUsecase by lazy { PurchaseUsecase(applicationContext) }
     var imageId: Int = 0
     var type: String = ""
     var title: String = ""
@@ -50,8 +54,13 @@ class MainActivity : AppCompatActivity() {
         binding.rv.adapter = adapter
         appDb = PurchaseDatabase.getInstance(applicationContext)
 
-        val listStart = setData()                  //для вывода списка после открытия приложения
-        sortToday(listStart)
+        lifecycleScope.launch(Dispatchers.Main) {
+            val listStart = withContext(Dispatchers.IO) {                                           //для вывода списка после открытия приложения
+                setData()
+            }
+            sortToday(listStart)
+        }
+
 
 
         startMainSpinner()                 //запуск спинера с выбором покупки
@@ -74,7 +83,11 @@ class MainActivity : AppCompatActivity() {
         binding.autoCompleteTextViewMain.setAdapter(arrayAdapter)
         binding.autoCompleteTextViewMain.onItemClickListener  = object : AdapterView.OnItemClickListener {
             override fun onItemClick(adapterView: AdapterView<*>?, view : View?, position: Int, item_id: Long) {
-                whenForItemClick(purchaseTypes)
+                lifecycleScope.launch {
+                    withContext(Dispatchers.Main) {
+                        whenForItemClick(purchaseTypes)
+                    }
+                }
             }
         }
     }
@@ -163,7 +176,11 @@ class MainActivity : AppCompatActivity() {
                         }, type, title, costPurchase, currentData
                     )
                     adapter.addPurchase(purchase)
-                    purchaseUsecase.addPurchase(purchase)
+                    lifecycleScope.launch {
+                        withContext(Dispatchers.IO) {
+                        purchaseUsecase.addPurchase(purchase)
+                        }
+                    }
                     counter++
                 }
             }
@@ -174,12 +191,12 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun setData(): List<Purchase> {                       //функция для установления первых данных после открытия приложения
+    suspend fun setData(): List<Purchase> {                       //функция для установления первых данных после открытия приложения
         return purchaseUsecase.getStartData()
     }
 
 
-    fun sortByType(type : String): List<Purchase> {         //функция с сортировкой по типу покупки
+    suspend fun sortByType(type : String): List<Purchase> {         //функция с сортировкой по типу покупки
         return purchaseUsecase.getData(type)
     }
 
@@ -248,7 +265,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    fun whenForItemClick(purchaseTypes : Array<String>) {                     //функция которая объединяет сортировки по времени и по типу покупки
+    suspend fun whenForItemClick(purchaseTypes : Array<String>) {                     //функция которая объединяет сортировки по времени и по типу покупки
         when(binding.autoCompleteTextViewMain.text.toString()) {
             purchaseTypes[0] -> {
                 val sortedList = sortByType(purchaseTypes[0])

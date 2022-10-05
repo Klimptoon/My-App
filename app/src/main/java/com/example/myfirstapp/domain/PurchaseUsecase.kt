@@ -11,7 +11,7 @@ class PurchaseUsecase(context: Context) {
     private val dao = PurchaseDatabase.getInstance(context).getPurchaseDao()
     private val purchaseRepository = PurchaseRepository(dao)
 
-    fun getData(type : String)  : List<Purchase>{
+    suspend fun getData(type : String)  : List<Purchase>{
         return if(type == "Все") {
             getStartData()
         } else {
@@ -26,11 +26,11 @@ class PurchaseUsecase(context: Context) {
         }
     }
 
-    fun getStartData() : List<Purchase> {
+    suspend fun getStartData() : List<Purchase> {
         return purchaseRepository.getData()
     }
 
-    fun addPurchase(purchase: Purchase) {
+    suspend fun addPurchase(purchase: Purchase) {
         purchaseRepository.addPurchase(purchase)
     }
 
