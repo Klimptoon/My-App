@@ -5,12 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myfirstapp.R
-import com.example.myfirstapp.data.PurchaseRepository
 import com.example.myfirstapp.databinding.RecyclerItemBinding
 
-class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.RecyclerHolder>() {
+class PurchaseAdapter : RecyclerView.Adapter<PurchaseAdapter.RecyclerHolder>() {
 
-    private val limit = 100
 
     val purchaseList = ArrayList<Purchase>()
 
@@ -43,8 +41,12 @@ class RecyclerAdapter : RecyclerView.Adapter<RecyclerAdapter.RecyclerHolder>() {
     }
 
     fun setData(purchseList: List<Purchase>) {
+        purchaseList.clear()
         purchaseList.addAll(purchseList)
         notifyDataSetChanged()
     }
+
+
+
 
 }

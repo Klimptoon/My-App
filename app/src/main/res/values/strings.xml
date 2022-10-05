@@ -16,6 +16,7 @@
 
 
     <string-array name="types">
+        <item>Все</item>
         <item>Одежда</item>
         <item>Еда</item>
         <item>Отдых</item>

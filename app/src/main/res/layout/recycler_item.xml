@@ -9,7 +9,8 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="300dp"
-        android:layout_height="wrap_content"
+        android:backgroundTint="@color/back"
+        android:layout_height="45dp"
         android:layout_margin="8dp"
         app:cardCornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -30,7 +31,7 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintStart_toEndOf="@id/text_recycler"
                 app:layout_constraintEnd_toStartOf="@id/text_recycler2"
-                android:text="-"
+                android:text="—"
                 android:fontFamily="serif-monospace"
                 android:textSize="20sp"
                 android:textStyle="bold"
@@ -51,7 +52,7 @@
                 android:textSize="20sp"
                 android:textStyle="bold"
                 android:textColor="@color/black"
-                android:layout_marginStart="10dp"
+                android:layout_marginStart="20dp"
                 android:ellipsize="end"
                 android:maxLength="10"
                 app:layout_constraintBottom_toBottomOf="parent"
