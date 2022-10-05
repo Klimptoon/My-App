@@ -3,6 +3,7 @@ package com.example.myfirstapp.presentation
 import PurchaseUsecase
 import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.AdapterView
@@ -59,6 +60,8 @@ class MainActivity : AppCompatActivity() {
                 setData()
             }
             sortToday(listStart)
+            Log.d("ff", listStart.toString())
+            Log.d("ff", getCurrentDateDay())
         }
 
 
@@ -207,11 +210,13 @@ class MainActivity : AppCompatActivity() {
         val sdf = SimpleDateFormat("dd.MM.yyyy")
         val listOfPurchase = mutableListOf<Purchase>()
         for(purchase in purchaseList) {
-            if(purchase.date == sdf.format(Date())) {
+            if(purchase.date == getCurrentDateDay()) {
                 listOfPurchase.add(purchase)
             }
         }
+        Log.d("ff", listOfPurchase.toString())
         adapter.setData(listOfPurchase)
+
     }
     fun sortWeek(purchaseList : List<Purchase>)  {
         val sdf = SimpleDateFormat("dd.MM.yyyy")
