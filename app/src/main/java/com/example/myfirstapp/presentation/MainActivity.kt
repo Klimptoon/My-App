@@ -210,7 +210,7 @@ class MainActivity : AppCompatActivity() {
         val sdf = SimpleDateFormat("dd.MM.yyyy")
         val listOfPurchase = mutableListOf<Purchase>()
         for(purchase in purchaseList) {
-            if(purchase.date == getCurrentDateDay()) {
+            if(purchase.date == sdf.format(Date())) {
                 listOfPurchase.add(purchase)
             }
         }
