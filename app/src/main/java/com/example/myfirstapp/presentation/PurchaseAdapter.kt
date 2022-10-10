@@ -7,12 +7,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myfirstapp.R
 import com.example.myfirstapp.databinding.RecyclerItemBinding
 
-class PurchaseAdapter : RecyclerView.Adapter<PurchaseAdapter.RecyclerHolder>() {
+class PurchaseAdapter : RecyclerView.Adapter<PurchaseAdapter.PurchaseViewHolder>() {
 
 
     val purchaseList = ArrayList<Purchase>()
 
-    class RecyclerHolder(item: View) : RecyclerView.ViewHolder(item) {
+    class PurchaseViewHolder(item: View) : RecyclerView.ViewHolder(item) {
         val binding = RecyclerItemBinding.bind(item)
         fun init(purchase: Purchase) = with(binding) {
             circle.setImageResource(purchase.imageId)
@@ -21,13 +21,13 @@ class PurchaseAdapter : RecyclerView.Adapter<PurchaseAdapter.RecyclerHolder>() {
         }
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PurchaseViewHolder {
         val view =
             LayoutInflater.from(parent.context).inflate(R.layout.recycler_item, parent, false)
-        return RecyclerHolder(view)
+        return PurchaseViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: RecyclerHolder, position: Int) {
+    override fun onBindViewHolder(holder: PurchaseViewHolder, position: Int) {
         holder.init(purchaseList[position])
     }
 
@@ -37,6 +37,7 @@ class PurchaseAdapter : RecyclerView.Adapter<PurchaseAdapter.RecyclerHolder>() {
 
     fun addPurchase(purchase: Purchase) {
         purchaseList.add(purchase)
+        purchaseList
         notifyDataSetChanged()
     }
 

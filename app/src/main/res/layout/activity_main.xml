@@ -116,8 +116,11 @@
         android:layout_height="0dp"
         android:layout_marginBottom="40dp"
         app:layout_constraintBottom_toTopOf="@+id/buttonAdd"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_type" />
+        app:layout_constraintTop_toBottomOf="@+id/spinner_type"
+        app:reverseLayout="true"
+        app:stackFromEnd="true" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"

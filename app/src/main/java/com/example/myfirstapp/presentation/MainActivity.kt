@@ -1,25 +1,20 @@
 package com.example.myfirstapp.presentation
 
-import PurchaseUsecase
 import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myfirstapp.R
 import com.example.myfirstapp.data.PurchaseDatabase
 import com.example.myfirstapp.databinding.ActivityMainBinding
 import com.example.myfirstapp.databinding.PeriodBinding
 import com.example.myfirstapp.databinding.PurchaseInputBinding
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -29,6 +24,7 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var binding: ActivityMainBinding
     lateinit var appDb : PurchaseDatabase
+    lateinit var viewModel : MainViewModel
 
 
     val currentData = getCurrentDateDay()
@@ -36,7 +32,6 @@ class MainActivity : AppCompatActivity() {
     val sdfWeek = SimpleDateFormat("$dateWeek - dd, MMM yyyy")
     val sdfMonth = SimpleDateFormat("MMM yyyy")
     val sdfYear = SimpleDateFormat("yyyy ГОД")
-    val purchaseUsecase by lazy { PurchaseUsecase(applicationContext) }
     var imageId: Int = 0
     var type: String = ""
     var title: String = ""
@@ -51,22 +46,30 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        viewModel = ViewModelProvider(this, MainViewModelFactory(this)).get(MainViewModel::class.java)
         binding.rv.layoutManager = GridLayoutManager(this@MainActivity, 1)
         binding.rv.adapter = adapter
         appDb = PurchaseDatabase.getInstance(applicationContext)
 
-        lifecycleScope.launch(Dispatchers.Main) {
-            val listStart = withContext(Dispatchers.IO) {                                           //для вывода списка после открытия приложения
-                setData()
+
+        viewModel.setStartData()
+        viewModel.startListLiveData.observe(this) {                                                    //для вывода списка после открытия приложения
+            if (it != null) {
+                adapter.setData(it)
             }
-            sortToday(listStart)
-            Log.d("ff", listStart.toString())
-            Log.d("ff", getCurrentDateDay())
         }
+//        lifecycleScope.launch(Dispatchers.Main) {
+//            val listStart = withContext(Dispatchers.IO) {
+//                setData()
+//            }
+//            sortToday(listStart)
+//            Log.d("ff", listStart.toString())
+//            Log.d("ff", getCurrentDateDay())
+//        }
 
 
 
-        startMainSpinner()                 //запуск спинера с выбором покупки
+        startMainSpinner()                 //запуск спинера с выбором покупки(еда , дом и т.д)
 
         binding.buttonAdd.setOnClickListener {
             showAlertDialog()
@@ -86,11 +89,7 @@ class MainActivity : AppCompatActivity() {
         binding.autoCompleteTextViewMain.setAdapter(arrayAdapter)
         binding.autoCompleteTextViewMain.onItemClickListener  = object : AdapterView.OnItemClickListener {
             override fun onItemClick(adapterView: AdapterView<*>?, view : View?, position: Int, item_id: Long) {
-                lifecycleScope.launch {
-                    withContext(Dispatchers.Main) {
-                        whenForItemClick(purchaseTypes)
-                    }
-                }
+                whenForItemClick(purchaseTypes)
             }
         }
     }
@@ -176,14 +175,10 @@ class MainActivity : AppCompatActivity() {
                             "Развлечения" -> R.drawable.circle_shape_green
                             "Дом" -> R.drawable.circle_shape_yellow
                             else -> R.drawable.circle_shape_blue
-                        }, type, title, costPurchase, currentData
+                        }, type, title, costPurchase
                     )
                     adapter.addPurchase(purchase)
-                    lifecycleScope.launch {
-                        withContext(Dispatchers.IO) {
-                        purchaseUsecase.addPurchase(purchase)
-                        }
-                    }
+                    viewModel.addPurchase(purchase)
                     counter++
                 }
             }
@@ -193,108 +188,63 @@ class MainActivity : AppCompatActivity() {
         dialog.show()
 
     }
-
-    suspend fun setData(): List<Purchase> {                       //функция для установления первых данных после открытия приложения
-        return purchaseUsecase.getStartData()
-    }
-
-
-    suspend fun sortByType(type : String): List<Purchase> {         //функция с сортировкой по типу покупки
-        return purchaseUsecase.getData(type)
-    }
-
-
+//
+//    suspend fun setData(): List<Purchase> {                       //функция для установления первых данных после открытия приложения
+//        return purchaseUsecase.getStartData()
+//    }
+//
+//
+//    suspend fun sortByType(type : String): List<Purchase> {         //функция с сортировкой по типу покупки
+//        return purchaseUsecase.getData(type)
+//    }
 
 
-    fun sortToday(purchaseList : List<Purchase>)  {
-        val sdf = SimpleDateFormat("dd.MM.yyyy")
-        val listOfPurchase = mutableListOf<Purchase>()
-        for(purchase in purchaseList) {
-            if(purchase.date == sdf.format(Date())) {
-                listOfPurchase.add(purchase)
-            }
-        }
-        Log.d("ff", listOfPurchase.toString())
-        adapter.setData(listOfPurchase)
 
-    }
-    fun sortWeek(purchaseList : List<Purchase>)  {
-        val sdf = SimpleDateFormat("dd.MM.yyyy")
-        val listOfPurchase = mutableListOf<Purchase>()
-        for(purchase in purchaseList) {
-            if(purchase.date.substringAfter('.') == sdf.format(Date()).substringAfter('.')) {
-                if(purchase.date.substringBefore('.').toInt() in sdf.format(Date()).substringBefore('.').toInt() - 7..sdf.format(Date()).substringBefore('.').toInt()) {
-                    listOfPurchase.add(purchase)
-                }
-            }
-        }
-        adapter.setData(listOfPurchase)
-    }
-    fun sortMonth(purchaseList : List<Purchase>)  {
-        val sdf = SimpleDateFormat("dd.MM.yyyy")
-        val listOfPurchase = mutableListOf<Purchase>()
-        for(purchase in purchaseList) {
-            if(purchase.date.substringAfterLast('.') == sdf.format(Date()).substringAfterLast('.')) {
-                if(purchase.date.substringAfter('.').substringBeforeLast('.').toInt() == sdf.format(Date()).substringAfter('.').substringBeforeLast('.').toInt()) {
-                    listOfPurchase.add(purchase)
-                }
-            }
-        }
-        adapter.setData(listOfPurchase)
-    }
-    fun sortYear(purchaseList : List<Purchase>)  {
-        val sdf = SimpleDateFormat("dd.MM.yyyy")
-        val listOfPurchase = mutableListOf<Purchase>()
-        for(purchase in purchaseList) {
-            if(purchase.date.substringAfterLast('.') == sdf.format(Date()).substringAfterLast('.')) {
-                    listOfPurchase.add(purchase)
-            }
-        }
-        adapter.setData(listOfPurchase)
-    }
 
-    fun whenData(sortedList : List<Purchase>) {                     //функция для вызова сортировок по типу выбранного периода даты
+
+    fun whenData() {                               //функция для вызова сортировок по типу выбранного периода даты
         when (binding.textViewDate.text) {
             getCurrentDateDay() -> {
-                sortToday(sortedList)
+                viewModel.setStartData()
             }
             sdfWeek.format(Date()).toString() -> {
-                sortWeek(sortedList)
+                viewModel.setWeekData()
             }
             sdfMonth.format(Date()).toString() -> {
-                sortMonth(sortedList)
+                viewModel.setMonthData()
             }
             sdfYear.format(Date()).toString() -> {
-                sortYear(sortedList)
+                viewModel.setYearData()
             }
         }
     }
 
-    suspend fun whenForItemClick(purchaseTypes : Array<String>) {                     //функция которая объединяет сортировки по времени и по типу покупки
+    fun whenForItemClick(purchaseTypes : Array<String>) {                     //функция которая объединяет сортировки по времени и по типу покупки
+
         when(binding.autoCompleteTextViewMain.text.toString()) {
             purchaseTypes[0] -> {
-                val sortedList = sortByType(purchaseTypes[0])
-                whenData(sortedList)
+                viewModel.setDataWithType(purchaseTypes[0])
+                whenData()
             }
             purchaseTypes[1] -> {
-                val sortedList = sortByType(purchaseTypes[1])
-                whenData(sortedList)
+                viewModel.setDataWithType(purchaseTypes[1])
+                whenData()
             }
             purchaseTypes[2] -> {
-                val sortedList = sortByType(purchaseTypes[2])
-                whenData(sortedList)
+                viewModel.setDataWithType(purchaseTypes[2])
+                whenData()
             }
             purchaseTypes[3] -> {
-                val sortedList = sortByType(purchaseTypes[3])
-                whenData(sortedList)
+                viewModel.setDataWithType(purchaseTypes[3])
+                whenData()
             }
             purchaseTypes[4] -> {
-                val sortedList = sortByType(purchaseTypes[4])
-                whenData(sortedList)
+                viewModel.setDataWithType(purchaseTypes[4])
+                whenData()
             }
             purchaseTypes[5] -> {
-                val sortedList = sortByType(purchaseTypes[5])
-                whenData(sortedList)
+                viewModel.setDataWithType(purchaseTypes[5])
+                whenData()
             }
         }
     }
