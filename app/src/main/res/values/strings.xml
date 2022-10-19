@@ -13,6 +13,12 @@
     <string name="day">Сегодня</string>
     <string name="year">Год</string>
     <string name="period">Выберите период</string>
+    <string name="currency_code">Код:</string>
+    <string name="currency_name">Название:</string>
+    <string name="currency_buy">Покупка:</string>
+    <string name="currency_sell">Цена валюты:</string>
+    <string name="currency_cost">15.25</string>
+    <string name="currency_quantity">Количество:</string>
 
 
     <string-array name="types">
@@ -31,5 +37,7 @@
         <item>За год</item>
         <item>За всё время</item>
     </string-array>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
