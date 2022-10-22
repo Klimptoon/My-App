@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -29,7 +30,7 @@ class MainFragment : Fragment() {
     lateinit var binding: FragmentMainBinding
     lateinit var appDb : PurchaseDatabase
     lateinit var viewModel : MainViewModel
-    lateinit var selectedFragment : Fragment
+
 
     val dateWeek = getCurrentDateDay().substringBefore(',').toInt() - 7
     val sdfWeek = SimpleDateFormat("$dateWeek - dd, MMM yyyy")
@@ -73,7 +74,6 @@ class MainFragment : Fragment() {
         viewModel.startListLiveData.observe(viewLifecycleOwner) {                                                    //для вывода списка после открытия приложения
             if (it != null) {
                 adapter.setData(it)
-
             }
         }
 
@@ -203,7 +203,6 @@ class MainFragment : Fragment() {
         when (binding.textViewDate.text) {
             getCurrentDateDay() -> {
                 viewModel.setStartData()
-
             }
             sdfWeek.format(Date()).toString() -> {
                 viewModel.setWeekData()
@@ -222,7 +221,6 @@ class MainFragment : Fragment() {
         when(binding.autoCompleteTextViewMain.text.toString()) {
             purchaseTypes[0] -> {
                 viewModel.setDataWithType(purchaseTypes[0])
-                Log.d("ff", whenData().toString())
                 whenData()
             }
             purchaseTypes[1] -> {

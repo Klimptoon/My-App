@@ -73,7 +73,7 @@
                 android:text="@string/currency_name"/>
 
             <TextView
-                android:id="@+id/tv_currency_buy"
+                android:id="@+id/tv_currency_quantity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"
@@ -83,7 +83,7 @@
                 android:text="@string/currency_cost"/>
 
             <TextView
-                android:id="@+id/tv_currency_sell"
+                android:id="@+id/tv_currency_cost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textStyle="bold"

@@ -30,7 +30,7 @@ class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
 
 
-    private val adapter = PurchaseAdapter()
+
 
     private var counter = 0
 
