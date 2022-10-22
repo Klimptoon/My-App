@@ -19,7 +19,7 @@ class CourseAdapter : RecyclerView.Adapter<CourseAdapter.CourseViewHolder>() {
         fun bind(currency : Currency) = with(binding) {
             tvCurrencyName.text = "${currency.charCode} - ${currency.name}"
             tvCurrencyQuantity.text = currency.nominal.toString()
-            tvCurrencyCost.text = currency.value.toString()
+            tvCurrencyCost.text = "${currency.value} российских рублей "
         }
     }
 

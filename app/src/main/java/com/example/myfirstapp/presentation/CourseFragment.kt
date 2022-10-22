@@ -28,7 +28,7 @@ class CourseFragment : Fragment() {
         binding.recyclerCourse.adapter = adapter
         viewModel.getCurrencyCourse()
         viewModel.myCurrencyList.observe(viewLifecycleOwner) {
-            adapter.setData(it)
+            adapter.setData(it.currencyList)
         }
 
         return binding.root

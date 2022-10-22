@@ -67,11 +67,11 @@ class MainFragment : Fragment() {
         appDb = PurchaseDatabase.getInstance(requireContext())
 
 
-        val list = viewModel.setStartData()
+
         viewModel.setStartData()
 
 
-        viewModel.startListLiveData.observe(viewLifecycleOwner) {                                                    //для вывода списка после открытия приложения
+        viewModel.startListLiveData.observe(viewLifecycleOwner) {                                   //для вывода списка после открытия приложения
             if (it != null) {
                 adapter.setData(it)
             }

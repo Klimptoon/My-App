@@ -6,9 +6,9 @@ import retrofit2.Response
 
 class CourseRepository {
 
-    suspend fun getCurrency() : Response<List<Currency>> {
+    suspend fun getCurrency() : Response<CurrencyList> {
         val itemService: ApiService = RetrofitInstance
-            .getRetrofitInstance(Currency::class.java, CurrencyDeserializer())!!
+            .getRetrofitInstance(CurrencyList::class.java, CurrencyDeserializer())!!
             .create(ApiService::class.java)
         return itemService.getCurrencyCourse()
     }

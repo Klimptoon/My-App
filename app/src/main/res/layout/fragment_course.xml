@@ -18,7 +18,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:src="@drawable/back"
         android:scaleType="fitXY"
-        android:alpha="0.0"
+        android:alpha="1"
         />
 
     <androidx.recyclerview.widget.RecyclerView
