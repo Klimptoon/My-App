@@ -23,7 +23,7 @@ class CourseFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCourseBinding.inflate(inflater, container, false)
-        val viewModel = ViewModelProvider(this).get(CourseViewModel::class.java)
+        val viewModel = ViewModelProvider(this, CourseViewModelFactory(requireContext())).get(CourseViewModel::class.java)
         binding.recyclerCourse.layoutManager = GridLayoutManager(requireContext(), 1)
         binding.recyclerCourse.adapter = adapter
         viewModel.getCurrencyCourse()
