@@ -11,4 +11,9 @@
     <color name="bez">#DD9595</color>
     <color name="newMain">#2BCC6F</color>
     <color name="back">#E8F1FF</color>
+    <color name="orange">#FF5722</color>
+    <color name="blue">#03A9F4</color>
+    <color name="pink">#E91E63</color>
+    <color name="yellow">#FFEB3B</color>
+    <color name="green">#FFEB3B</color>
 </resources>

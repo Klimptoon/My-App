@@ -2,128 +2,31 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".presentation.MainActivity">
 
 
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/spinner_type"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        android:layout_width="0dp"
-        android:layout_marginTop="20dp"
-        android:layout_height="wrap_content"
-        app:startIconDrawable="@drawable/ic_purchase"
-        app:layout_constraintTop_toBottomOf="@id/view_under_toolbar"
-        app:layout_constraintEnd_toEndOf="parent"
-        >
-
-        <AutoCompleteTextView
-            android:id="@+id/autoCompleteTextViewMain"
-            android:layout_width="170dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/white"
-            android:hint="Тип покупки"
-            android:inputType="none"
-            android:gravity="center"
-            android:text="Все"
-            android:textSize="15sp" />
-    </com.google.android.material.textfield.TextInputLayout>
-
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/newMain"
-        app:layout_constraintEnd_toEndOf="parent"
+    <fragment
+        android:id="@+id/fragmentContainerView"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" >
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_calendar"
-            android:layout_gravity="center"
-            />
-
-
-        <TextView
-            android:id="@+id/textViewDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="24:02:2022"
-            android:textColor="@color/white"
-            android:textSize="18dp"
-            android:layout_marginStart="20dp"
-            android:layout_gravity="center"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/toolbar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageButton
-        android:id="@+id/alert_tool_bar"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:backgroundTint="@color/newMain"
-        android:src="@drawable/down_arrow_white"
-        android:layout_gravity="center"/>
-
-
-
-    </androidx.appcompat.widget.Toolbar>
-
-
-
-    <Button
-        android:id="@+id/buttonAdd"
-        android:layout_width="0dp"
-        android:layout_height="55dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginBottom="30dp"
-        android:backgroundTint="@color/newMain"
-        android:text="@string/button_main"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottom_navigation_view"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guidelineBottom"
-         />
-
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidelineBottom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.65" />
-
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guidlineTop"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_end="550dp" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="40dp"
-        app:layout_constraintBottom_toTopOf="@+id/buttonAdd"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_type"
-        app:reverseLayout="true"
-        app:stackFromEnd="true" />
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/my_nav"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp" />
+
+
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/bottomNavigationView"
+        android:id="@+id/bottom_navigation_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/newMain"
@@ -133,39 +36,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/bottom_menu">
-
-
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 
-
-
-    <TextView
-        android:id="@+id/view_under_toolbar"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:background="@drawable/header_background"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"/>
-
-    <EditText
-        android:id="@+id/et_search"
-        android:layout_width="0dp"
-        android:layout_height="40dp"
-        android:background="@drawable/white_rectangle_background"
-        android:layout_marginStart="40dp"
-        android:layout_marginEnd="40dp"
-        android:paddingStart="20dp"
-        android:maxLines="1"
-        android:imeOptions="actionDone"
-        android:inputType="textPersonName|textCapWords"
-        android:maxLength="30"
-        android:hint="Search elements"
-        app:layout_constraintStart_toStartOf="@id/view_under_toolbar"
-        app:layout_constraintEnd_toEndOf="@id/view_under_toolbar"
-        app:layout_constraintTop_toTopOf="@id/view_under_toolbar"
-        app:layout_constraintTop_toBottomOf="@id/view_under_toolbar"
-        />
 
 
 
