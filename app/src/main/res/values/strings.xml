@@ -30,6 +30,14 @@
         <item>Прочее</item>
     </string-array>
 
+    <string-array name="types_for_ratio">
+        <item>Одежда</item>
+        <item>Еда</item>
+        <item>Отдых</item>
+        <item>Дом</item>
+        <item>Прочее</item>
+    </string-array>
+
     <string-array name="periods">
         <item>За день</item>
         <item>За неделю</item>
