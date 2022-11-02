@@ -1,4 +1,5 @@
 import android.content.Context
+import android.util.Log
 import com.example.myfirstapp.data.PurchaseDao
 import com.example.myfirstapp.data.PurchaseDatabase
 import com.example.myfirstapp.data.PurchaseRepository
@@ -24,14 +25,21 @@ class PurchaseUsecase(context: Context) {
             }
             listOfType
         }
+
     }
 
     suspend fun getStartData() : List<Purchase> {
         return purchaseRepository.getData()
     }
 
+
+
     suspend fun addPurchase(purchase: Purchase) {
         purchaseRepository.addPurchase(purchase)
+    }
+
+    suspend fun deletePurchase(purchase: Purchase) {
+        purchaseRepository.deletePurchase(purchase)
     }
 
 

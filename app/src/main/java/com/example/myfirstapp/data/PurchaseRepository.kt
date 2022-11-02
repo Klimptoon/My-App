@@ -13,5 +13,9 @@ class PurchaseRepository(private val purchaseDao : PurchaseDao) {
     suspend fun getData() : List<Purchase> {
         return purchaseDao.getData().map{ PurchaseEnt -> PurchaseEnt.toPurchase() }
     }
+    suspend fun deletePurchase(purchase : Purchase) {
+        val entity = PurchaseEnt.fromPurchase(purchase)
+        purchaseDao.deletePurchase(entity)
+    }
 
 }

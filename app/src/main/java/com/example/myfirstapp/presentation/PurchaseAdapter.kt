@@ -12,14 +12,16 @@ class PurchaseAdapter : RecyclerView.Adapter<PurchaseAdapter.PurchaseViewHolder>
 
     val purchaseList = ArrayList<Purchase>()
 
-    class PurchaseViewHolder(item: View) : RecyclerView.ViewHolder(item) {
-        val binding = RecyclerItemBinding.bind(item)
+    class PurchaseViewHolder(item: View) : RecyclerView.ViewHolder(item)     {
+        private val binding = RecyclerItemBinding.bind(item)
         fun init(purchase: Purchase) = with(binding) {
             circle.setImageResource(purchase.imageId)
             textRecycler.text = "${purchase.title}"
             textRecycler2.text = "${purchase.cost}"
         }
+
     }
+
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PurchaseViewHolder {
         val view =
@@ -34,6 +36,7 @@ class PurchaseAdapter : RecyclerView.Adapter<PurchaseAdapter.PurchaseViewHolder>
     override fun getItemCount(): Int {
         return purchaseList.size
     }
+
 
     fun addPurchase(purchase: Purchase) {
         purchaseList.add(purchase)

@@ -97,35 +97,79 @@ class MainFragment : Fragment() {
         binding.autoCompleteTextViewMain.setAdapter(arrayAdapter)
         binding.autoCompleteTextViewMain.onItemClickListener  = object : AdapterView.OnItemClickListener {
             override fun onItemClick(adapterView: AdapterView<*>?, view : View?, position: Int, item_id: Long) {
-                whenForItemClick(purchaseTypes)
+                whenPress(position, purchaseTypes)
+            }
+        }
+    }
+
+    fun whenPress(position : Int, purchaseTypes: Array<String>) {
+        when(position){
+            0 -> when(binding.textViewDate.text) {
+                getCurrentDateDay() -> viewModel.setDataWithTypeToday(purchaseTypes[0])
+                sdfWeek.format(Date()).toString() -> viewModel.setDataWithTypeWeek(purchaseTypes[0])
+                sdfMonth.format(Date()).toString() -> viewModel.setDataWithTypeMonth(purchaseTypes[0])
+                sdfYear.format(Date()).toString() -> viewModel.setDataWithTypeYear(purchaseTypes[0])
+            }
+            1 -> when(binding.textViewDate.text) {
+                getCurrentDateDay() -> viewModel.setDataWithTypeToday(purchaseTypes[1])
+                sdfWeek.format(Date()).toString() -> viewModel.setDataWithTypeWeek(purchaseTypes[1])
+                sdfMonth.format(Date()).toString() -> viewModel.setDataWithTypeMonth(purchaseTypes[1])
+                sdfYear.format(Date()).toString() -> viewModel.setDataWithTypeYear(purchaseTypes[1])
+            }
+            2 -> when(binding.textViewDate.text) {
+                getCurrentDateDay() -> viewModel.setDataWithTypeToday(purchaseTypes[2])
+                sdfWeek.format(Date()).toString() -> viewModel.setDataWithTypeWeek(purchaseTypes[2])
+                sdfMonth.format(Date()).toString() -> viewModel.setDataWithTypeMonth(purchaseTypes[2])
+                sdfYear.format(Date()).toString() -> viewModel.setDataWithTypeYear(purchaseTypes[2])
+            }
+            3 -> when(binding.textViewDate.text) {
+                getCurrentDateDay() -> viewModel.setDataWithTypeToday(purchaseTypes[3])
+                sdfWeek.format(Date()).toString() -> viewModel.setDataWithTypeWeek(purchaseTypes[3])
+                sdfMonth.format(Date()).toString() -> viewModel.setDataWithTypeMonth(purchaseTypes[3])
+                sdfYear.format(Date()).toString() -> viewModel.setDataWithTypeYear(purchaseTypes[3])
+            }
+            4 -> when(binding.textViewDate.text) {
+                getCurrentDateDay() -> viewModel.setDataWithTypeToday(purchaseTypes[4])
+                sdfWeek.format(Date()).toString() -> viewModel.setDataWithTypeWeek(purchaseTypes[4])
+                sdfMonth.format(Date()).toString() -> viewModel.setDataWithTypeMonth(purchaseTypes[4])
+                sdfYear.format(Date()).toString() -> viewModel.setDataWithTypeYear(purchaseTypes[4])
+            }
+            5 -> when(binding.textViewDate.text) {
+                getCurrentDateDay() -> viewModel.setDataWithTypeToday(purchaseTypes[5])
+                sdfWeek.format(Date()).toString() -> viewModel.setDataWithTypeWeek(purchaseTypes[5])
+                sdfMonth.format(Date()).toString() -> viewModel.setDataWithTypeMonth(purchaseTypes[5])
+                sdfYear.format(Date()).toString() -> viewModel.setDataWithTypeYear(purchaseTypes[5])
             }
         }
     }
 
     private fun showAlertDialogForTime() {                           // алерт диалог для выбора периода времени
         val dialogBinding = PeriodBinding.inflate(layoutInflater)
-
         val dialog = AlertDialog.Builder(requireContext())
             .setView(dialogBinding.root)
             .create()
         dialog.setOnShowListener {
             dialogBinding.cardDay.setOnClickListener {
                 dialog.dismiss()
+                viewModel.setStartData()
                 binding.textViewDate.text = getCurrentDateDay()
             }
             dialogBinding.cardWeek.setOnClickListener {
                 dialog.dismiss()
+                viewModel.setWeekData()
                 val date = getCurrentDateDay().substringBefore(',').toInt() - 7
                 val sdf = SimpleDateFormat("$date - dd, MMM yyyy")
                 binding.textViewDate.text = sdf.format(Date())
             }
             dialogBinding.cardMonth.setOnClickListener {
                 dialog.dismiss()
+                viewModel.setMonthData()
                 val sdf = SimpleDateFormat("MMM yyyy")
                 binding.textViewDate.text = sdf.format(Date())
             }
             dialogBinding.cardYear.setOnClickListener {
                 dialog.dismiss()
+                viewModel.setYearData()
                 val sdf = SimpleDateFormat("yyyy ГОД")
                 binding.textViewDate.text = sdf.format(Date())
             }
@@ -143,7 +187,7 @@ class MainFragment : Fragment() {
 
     private fun getCurrentDateDay(): String {                         // Функция для получения даты
         val sdf = SimpleDateFormat("dd, MMM yyyy")
-        return sdf.format(Date())
+        return sdf.format(Date()).toString()
     }
 
 
@@ -196,55 +240,11 @@ class MainFragment : Fragment() {
         }
         dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
         dialog.show()
-
     }
 
-    fun whenData() {                               //функция для вызова сортировок по типу выбранного периода даты
-        when (binding.textViewDate.text) {
-            getCurrentDateDay() -> {
-                viewModel.setStartData()
-            }
-            sdfWeek.format(Date()).toString() -> {
-                viewModel.setWeekData()
-            }
-            sdfMonth.format(Date()).toString() -> {
-                viewModel.setMonthData()
-            }
-            sdfYear.format(Date()).toString() -> {
-                viewModel.setYearData()
-            }
-        }
-    }
 
-    fun whenForItemClick(purchaseTypes : Array<String>) {                     //функция которая объединяет сортировки по времени и по типу покупки
 
-        when(binding.autoCompleteTextViewMain.text.toString()) {
-            purchaseTypes[0] -> {
-                viewModel.setDataWithType(purchaseTypes[0])
-                whenData()
-            }
-            purchaseTypes[1] -> {
-                viewModel.setDataWithType(purchaseTypes[1])
-                whenData()
-            }
-            purchaseTypes[2] -> {
-                viewModel.setDataWithType(purchaseTypes[2])
-                whenData()
-            }
-            purchaseTypes[3] -> {
-                viewModel.setDataWithType(purchaseTypes[3])
-                whenData()
-            }
-            purchaseTypes[4] -> {
-                viewModel.setDataWithType(purchaseTypes[4])
-                whenData()
-            }
-            purchaseTypes[5] -> {
-                viewModel.setDataWithType(purchaseTypes[5])
-                whenData()
-            }
-        }
-    }
+
 
 
 }

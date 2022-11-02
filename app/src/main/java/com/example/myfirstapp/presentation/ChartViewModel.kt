@@ -1,41 +1,52 @@
 package com.example.myfirstapp.presentation
 
 import PurchaseUsecase
+import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.myfirstapp.R
+import com.github.mikephil.charting.data.PieEntry
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.lang.NullPointerException
 import java.text.SimpleDateFormat
 import java.util.*
 
 
 class ChartViewModel(private val purchaseUseCase: PurchaseUsecase) : ViewModel() {
 
-    var allListLiveData = MutableLiveData<List<Purchase>>()
+    var startLiveData = MutableLiveData<MutableList<PieEntry>>()
 
 
-    fun getAllPurchases() {
-        viewModelScope.launch {
-            allListLiveData.value = purchaseUseCase.getStartData()
-        }
-    }
-    fun sortByTypeRatio(type : String) : Float {
-        var valueOfType = 0.0
-        var value = 0.0
-        var ratio = 0.0f
-        viewModelScope.launch {
+    fun sortByTypes() {                                         //функция для заполнения списка PieEntry и передачей списка в лайв дату
+        var valueOfType = 0.0f
+        val listPieEntry = mutableListOf<PieEntry>()
+        viewModelScope.launch(Dispatchers.Main) {
             val list = purchaseUseCase.getStartData()
-            list.forEach {
-                value += it.cost.toDouble()
-                if(it.type == type) {
-                    valueOfType += it.cost.toDouble()
+            val listOfTypes = listOf("Одежда", "Еда", "Отдых", "Дом", "Прочее")
+            for (type in listOfTypes) {
+                list.forEach {
+                    if (it.type == type) {
+                        valueOfType += it.cost.toFloat()
+                    }
+                }
+                if (valueOfType >= 0.1f) {
+                    withContext(Dispatchers.Main) {
+                        listPieEntry.add(PieEntry(valueOfType, type))
+                    }
+                } else withContext(Dispatchers.Main) {
 
                 }
+                valueOfType = 0.0f
             }
-            ratio = (valueOfType/value).toFloat()
+            startLiveData.value = listPieEntry
         }
-        return ratio
     }
+
+
 
     fun sortToday(purchaseList : List<Purchase>) : List<Purchase> {   //функции для сортировки списка по выбранному периоду времени
         val sdf = SimpleDateFormat("dd.MM.yyyy")

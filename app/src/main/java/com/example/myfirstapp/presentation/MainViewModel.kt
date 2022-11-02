@@ -14,6 +14,8 @@ class MainViewModel(private val purchaseUsecase : PurchaseUsecase) : ViewModel()
 
     var startListLiveData = MutableLiveData<List<Purchase>>()
 
+
+
     init {
 
     }
@@ -27,7 +29,12 @@ class MainViewModel(private val purchaseUsecase : PurchaseUsecase) : ViewModel()
         viewModelScope.launch(Dispatchers.IO) {
             purchaseUsecase.addPurchase(purchase)
         }
+    }
 
+    fun deletePurchase(purchase: Purchase) {
+        viewModelScope.launch(Dispatchers.IO) {
+            purchaseUsecase.deletePurchase(purchase)
+        }
     }
 
     fun setStartData() {                                                    //функция для установления первых данных после открытия приложения
@@ -61,6 +68,36 @@ class MainViewModel(private val purchaseUsecase : PurchaseUsecase) : ViewModel()
             startListLiveData.value = listOfPurchase
         }
     }
+    fun setDataWithTypeToday(type : String) {                                  //функция для установки данных по типу покупки
+        viewModelScope.launch {
+            val listOfPurchase = purchaseUsecase.getData(type)
+            val sortedList = sortToday(listOfPurchase)
+            startListLiveData.value = sortedList
+        }
+    }
+
+    fun setDataWithTypeWeek(type : String) {                                  //функция для установки данных по типу покупки
+        viewModelScope.launch {
+            val listOfPurchase = purchaseUsecase.getData(type)
+            val sortedList = sortWeek(listOfPurchase)
+            startListLiveData.value = sortedList
+        }
+    }
+    fun setDataWithTypeMonth(type : String) {                                  //функция для установки данных по типу покупки
+        viewModelScope.launch {
+            val listOfPurchase = purchaseUsecase.getData(type)
+            val sortedList = sortMonth(listOfPurchase)
+            startListLiveData.value = sortedList
+        }
+    }
+    fun setDataWithTypeYear(type : String) {                                  //функция для установки данных по типу покупки
+        viewModelScope.launch {
+            val listOfPurchase = purchaseUsecase.getData(type)
+            val sortedList = sortWeek(listOfPurchase)
+            startListLiveData.value = sortedList
+        }
+    }
+
 
     fun sortToday(purchaseList : List<Purchase>) : List<Purchase> {   //функции для сортировки списка по выбранному периоду времени
         val sdf = SimpleDateFormat("dd.MM.yyyy")
