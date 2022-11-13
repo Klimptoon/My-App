@@ -12,6 +12,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myfirstapp.R
@@ -30,12 +31,13 @@ class MainFragment : Fragment() {
     lateinit var binding: FragmentMainBinding
     lateinit var appDb : PurchaseDatabase
     lateinit var viewModel : MainViewModel
+    private val sharedViewModelForMainChart : SharedViewModelForMainChart by activityViewModels()
 
 
-    val dateWeek = getCurrentDateDay().substringBefore(',').toInt() - 7
-    val sdfWeek = SimpleDateFormat("$dateWeek - dd, MMM yyyy")
-    val sdfMonth = SimpleDateFormat("MMM yyyy")
-    val sdfYear = SimpleDateFormat("yyyy ГОД")
+    private val dateWeek = getCurrentDateDay().substringBefore(',').toInt() - 7
+    private val sdfWeek = SimpleDateFormat("$dateWeek - dd, MMM yyyy")
+    private val sdfMonth = SimpleDateFormat("MMM yyyy")
+    private val sdfYear = SimpleDateFormat("yyyy ГОД")
     var imageId: Int = 0
     var type: String = ""
     var title: String = ""
@@ -49,7 +51,7 @@ class MainFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentMainBinding.inflate(inflater, container, false)
-
+        Log.d("ff", "onCreateView - Main fragment")
 
         
         return binding.root
@@ -57,6 +59,7 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.d("ff", "onViewCreated - Main fragment")
         init()
     }
 
@@ -65,6 +68,8 @@ class MainFragment : Fragment() {
         binding.rv.layoutManager = GridLayoutManager(requireContext(), 1)
         binding.rv.adapter = adapter
         appDb = PurchaseDatabase.getInstance(requireContext())
+        sharedViewModelForMainChart.saveCurrentDate(getCurrentDateDay())
+
 
 
 
@@ -153,6 +158,7 @@ class MainFragment : Fragment() {
                 dialog.dismiss()
                 viewModel.setStartData()
                 binding.textViewDate.text = getCurrentDateDay()
+                sharedViewModelForMainChart.saveCurrentDate(binding.textViewDate.text.toString())
             }
             dialogBinding.cardWeek.setOnClickListener {
                 dialog.dismiss()
@@ -160,18 +166,21 @@ class MainFragment : Fragment() {
                 val date = getCurrentDateDay().substringBefore(',').toInt() - 7
                 val sdf = SimpleDateFormat("$date - dd, MMM yyyy")
                 binding.textViewDate.text = sdf.format(Date())
+                sharedViewModelForMainChart.saveCurrentDate(binding.textViewDate.text.toString())
             }
             dialogBinding.cardMonth.setOnClickListener {
                 dialog.dismiss()
                 viewModel.setMonthData()
                 val sdf = SimpleDateFormat("MMM yyyy")
                 binding.textViewDate.text = sdf.format(Date())
+                sharedViewModelForMainChart.saveCurrentDate(binding.textViewDate.text.toString())
             }
             dialogBinding.cardYear.setOnClickListener {
                 dialog.dismiss()
                 viewModel.setYearData()
                 val sdf = SimpleDateFormat("yyyy ГОД")
                 binding.textViewDate.text = sdf.format(Date())
+                sharedViewModelForMainChart.saveCurrentDate(binding.textViewDate.text.toString())
             }
 
         }

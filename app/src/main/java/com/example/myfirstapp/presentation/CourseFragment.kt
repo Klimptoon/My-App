@@ -1,6 +1,7 @@
 package com.example.myfirstapp.presentation
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -23,6 +24,7 @@ class CourseFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentCourseBinding.inflate(inflater, container, false)
+        Log.d("ff", "onCreateView - Course fragment")
         val viewModel = ViewModelProvider(this, CourseViewModelFactory(requireContext())).get(CourseViewModel::class.java)
         binding.recyclerCourse.layoutManager = GridLayoutManager(requireContext(), 1)
         binding.recyclerCourse.adapter = adapter

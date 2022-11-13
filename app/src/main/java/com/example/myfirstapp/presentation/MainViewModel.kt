@@ -93,7 +93,7 @@ class MainViewModel(private val purchaseUsecase : PurchaseUsecase) : ViewModel()
     fun setDataWithTypeYear(type : String) {                                  //функция для установки данных по типу покупки
         viewModelScope.launch {
             val listOfPurchase = purchaseUsecase.getData(type)
-            val sortedList = sortWeek(listOfPurchase)
+            val sortedList = sortYear(listOfPurchase)
             startListLiveData.value = sortedList
         }
     }

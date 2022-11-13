@@ -19,6 +19,9 @@
     <string name="currency_sell">Цена валюты:</string>
     <string name="currency_cost">15.25</string>
     <string name="currency_quantity">Количество:</string>
+    <string name="empty_chart">За данный период
+        времени покупки отсутствуют</string>
+
 
 
     <string-array name="types">

@@ -21,14 +21,87 @@ class ChartViewModel(private val purchaseUseCase: PurchaseUsecase) : ViewModel()
     var startLiveData = MutableLiveData<MutableList<PieEntry>>()
 
 
-    fun sortByTypes() {                                         //функция для заполнения списка PieEntry и передачей списка в лайв дату
+    fun sortByTypesDay() {                                         //функция для заполнения списка PieEntry и передачей списка в лайв дату
         var valueOfType = 0.0f
         val listPieEntry = mutableListOf<PieEntry>()
         viewModelScope.launch(Dispatchers.Main) {
             val list = purchaseUseCase.getStartData()
             val listOfTypes = listOf("Одежда", "Еда", "Отдых", "Дом", "Прочее")
             for (type in listOfTypes) {
-                list.forEach {
+                Log.d("ff", sortToday(list).toString())
+                sortToday(list).forEach {
+                    if (it.type == type) {
+                        valueOfType += it.cost.toFloat()
+                    }
+                }
+                if (valueOfType >= 0.1f) {
+                    withContext(Dispatchers.Main) {
+                        listPieEntry.add(PieEntry(valueOfType, type))
+                    }
+                } else withContext(Dispatchers.Main) {
+
+                }
+                valueOfType = 0.0f
+            }
+            startLiveData.value = listPieEntry
+        }
+    }
+    fun sortByTypesWeek() {                                         //функция для заполнения списка PieEntry и передачей списка в лайв дату
+        var valueOfType = 0.0f
+        val listPieEntry = mutableListOf<PieEntry>()
+        viewModelScope.launch(Dispatchers.Main) {
+            val list = purchaseUseCase.getStartData()
+            val listOfTypes = listOf("Одежда", "Еда", "Отдых", "Дом", "Прочее")
+            for (type in listOfTypes) {
+                sortWeek(list).forEach {
+                    if (it.type == type) {
+                        valueOfType += it.cost.toFloat()
+                    }
+                }
+                if (valueOfType >= 0.1f) {
+                    withContext(Dispatchers.Main) {
+                        listPieEntry.add(PieEntry(valueOfType, type))
+                    }
+                } else withContext(Dispatchers.Main) {
+
+                }
+                valueOfType = 0.0f
+            }
+            startLiveData.value = listPieEntry
+        }
+    }
+    fun sortByTypesMonth() {                                         //функция для заполнения списка PieEntry и передачей списка в лайв дату
+        var valueOfType = 0.0f
+        val listPieEntry = mutableListOf<PieEntry>()
+        viewModelScope.launch(Dispatchers.Main) {
+            val list = purchaseUseCase.getStartData()
+            val listOfTypes = listOf("Одежда", "Еда", "Отдых", "Дом", "Прочее")
+            for (type in listOfTypes) {
+                sortMonth(list).forEach {
+                    if (it.type == type) {
+                        valueOfType += it.cost.toFloat()
+                    }
+                }
+                if (valueOfType >= 0.1f) {
+                    withContext(Dispatchers.Main) {
+                        listPieEntry.add(PieEntry(valueOfType, type))
+                    }
+                } else withContext(Dispatchers.Main) {
+
+                }
+                valueOfType = 0.0f
+            }
+            startLiveData.value = listPieEntry
+        }
+    }
+    fun sortByTypesYear() {                                         //функция для заполнения списка PieEntry и передачей списка в лайв дату
+        var valueOfType = 0.0f
+        val listPieEntry = mutableListOf<PieEntry>()
+        viewModelScope.launch(Dispatchers.Main) {
+            val list = purchaseUseCase.getStartData()
+            val listOfTypes = listOf("Одежда", "Еда", "Отдых", "Дом", "Прочее")
+            for (type in listOfTypes) {
+                sortYear(list).forEach {
                     if (it.type == type) {
                         valueOfType += it.cost.toFloat()
                     }

@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.example.myfirstapp.R
 import com.example.myfirstapp.databinding.FragmentChartBinding
@@ -22,6 +23,9 @@ import com.github.mikephil.charting.data.PieEntry
 import com.github.mikephil.charting.formatter.PercentFormatter
 import com.github.mikephil.charting.utils.ColorTemplate
 import com.github.mikephil.charting.utils.ColorTemplate.MATERIAL_COLORS
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class ChartFragment : Fragment() {
@@ -30,37 +34,52 @@ class ChartFragment : Fragment() {
     private lateinit var pieChart : PieChart
     lateinit var viewModel : ChartViewModel
     private var entries = mutableListOf<PieEntry>()
+    private val sharedViewModelForMainChart : SharedViewModelForMainChart by activityViewModels()
+    private val dateWeek = getCurrentDateDay().substringBefore(',').toInt() - 7
+    private val sdfWeek = SimpleDateFormat("$dateWeek - dd, MMM yyyy")
+    private val sdfMonth = SimpleDateFormat("MMM yyyy")
+    private val sdfYear = SimpleDateFormat("yyyy ГОД")
 
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentChartBinding.inflate(inflater, container, false)
-        binding2 = FragmentMainBinding.inflate(inflater, container, false)
-
+        Log.d("ff", "onCreateView - Chart fragment")
+        binding.tv.text = sharedViewModelForMainChart.dateLiveData.value.toString()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        Log.d("ff", "onViewCreated - Chart fragment")
         init()
     }
 
     private fun init() {
         viewModel = ViewModelProvider(this, ChartViewModelFactory(requireContext())).get(ChartViewModel::class.java)
         pieChart = binding.pieChart
+
         viewModel.startLiveData.observe(viewLifecycleOwner) {
             entries = it
-            drawGraphic(entries)
+            if(entries.isNotEmpty()) {
+                drawGraphic(entries)
+            }
+            else {
+                binding.pieChart.visibility = View.GONE
+                binding.tvWhenEmpty.visibility = View.VISIBLE
+            }
         }
-        binding.tv.text = binding2.textViewDate.text
-
 
 
         setUpPieChart()
         loadDataInPieChart()
 
 
+    }
+
+    private fun getCurrentDateDay(): String {                         // Функция для получения даты
+        val sdf = SimpleDateFormat("dd, MMM yyyy")
+        return sdf.format(Date()).toString()
     }
 
 
@@ -88,7 +107,12 @@ class ChartFragment : Fragment() {
     private fun loadDataInPieChart() {
 
 
-        viewModel.sortByTypes()
+        when(binding.tv.text.toString()) {
+            getCurrentDateDay() -> viewModel.sortByTypesDay()
+            sdfWeek.format(Date()).toString() -> viewModel.sortByTypesWeek()
+            sdfMonth.format(Date()).toString() -> viewModel.sortByTypesMonth()
+            sdfYear.format(Date()).toString() -> viewModel.sortByTypesYear()
+        }
 
     }
 

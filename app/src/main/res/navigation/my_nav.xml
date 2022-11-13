@@ -8,7 +8,8 @@
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.example.myfirstapp.presentation.MainFragment"
-        android:label="MainFragment" />
+        android:label="MainFragment"
+        tools:layout="@layout/fragment_main" />
     <fragment
         android:id="@+id/courseFragment"
         android:name="com.example.myfirstapp.presentation.CourseFragment"

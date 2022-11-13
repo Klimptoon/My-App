@@ -11,7 +11,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myfirstapp.R
@@ -27,24 +31,28 @@ import java.util.*
 class MainActivity : AppCompatActivity() {
 
 
-    lateinit var binding: ActivityMainBinding
+    private lateinit var binding: ActivityMainBinding
+    private lateinit var navController : NavController
 
 
 
 
-    private var counter = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val bottomNavView = findViewById<BottomNavigationView>(R.id.bottom_navigation_view)
-        val navController = findNavController(R.id.fragmentContainerView)
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container_view) as NavHostFragment
+        navController = navHostFragment.navController
 
+
+        val bottomNavView = findViewById<BottomNavigationView>(R.id.bottom_navigation_view)
         bottomNavView.setupWithNavController(navController)
 
     }
+
+
 
 
 
