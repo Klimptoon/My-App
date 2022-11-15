@@ -17,5 +17,5 @@ interface PurchaseDao {
     suspend fun getData() : List<PurchaseEnt>
 
     @Delete
-    suspend fun deletePurchase(purchase: PurchaseEnt)
+    suspend fun deletePurchase(purchase: PurchaseEnt) : Int
 }

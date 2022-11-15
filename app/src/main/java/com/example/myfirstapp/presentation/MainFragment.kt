@@ -25,7 +25,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 
-class MainFragment : Fragment() {
+class MainFragment : Fragment(), PurchaseAdapterListener {
 
 
     lateinit var binding: FragmentMainBinding
@@ -44,7 +44,7 @@ class MainFragment : Fragment() {
     var costPurchase: String = ""
 
 
-    private val adapter = PurchaseAdapter()
+    private val adapter = PurchaseAdapter(this)
 
     private var counter = 0
 
@@ -232,13 +232,14 @@ class MainFragment : Fragment() {
                 binding.apply {
                     if (counter > 3) counter = 0
                     val purchase = Purchase(
+                        id = 0,
                         when (type) {
                             "Еда" -> R.drawable.circle_shape_red
                             "Одежда" -> R.drawable.circle_shape_blue
                             "Развлечения" -> R.drawable.circle_shape_green
                             "Дом" -> R.drawable.circle_shape_yellow
                             else -> R.drawable.circle_shape_blue
-                        }, type, title, costPurchase
+                        },type, title, costPurchase
                     )
                     adapter.addPurchase(purchase)
                     viewModel.addPurchase(purchase)
@@ -251,9 +252,10 @@ class MainFragment : Fragment() {
         dialog.show()
     }
 
-
-
-
+    override fun onPurchaseDelete(purchase: Purchase) {
+        viewModel.deletePurchase(purchase)
+        adapter.deletePurchase(purchase)
+    }
 
 
 }

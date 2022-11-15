@@ -20,6 +20,7 @@ data class PurchaseEnt(
 )
 {
     fun toPurchase() : Purchase = Purchase(
+        id = id,
         imageId = imageId,
         type = type,
         title = title,
@@ -29,12 +30,12 @@ data class PurchaseEnt(
 
     companion object {
         fun fromPurchase(purchase: Purchase): PurchaseEnt = PurchaseEnt(
-            id = 0,
+            id = purchase.id,
             purchase.imageId,
             type = purchase.type,
             title = purchase.title,
             cost = purchase.cost,
-            date = getCurrentDateDay()
+            date = purchase.date
         )
 
         private fun getCurrentDateDay(): String {
