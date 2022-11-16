@@ -1,6 +1,7 @@
 package com.example.myfirstapp.presentation
 
 import android.content.DialogInterface
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -12,15 +13,13 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.content.res.AppCompatResources.getDrawable
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.myfirstapp.R
 import com.example.myfirstapp.data.PurchaseDatabase
-import com.example.myfirstapp.databinding.ActivityMainBinding
-import com.example.myfirstapp.databinding.FragmentMainBinding
-import com.example.myfirstapp.databinding.PeriodBinding
-import com.example.myfirstapp.databinding.PurchaseInputBinding
+import com.example.myfirstapp.databinding.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -253,9 +252,30 @@ class MainFragment : Fragment(), PurchaseAdapterListener {
     }
 
     override fun onPurchaseDelete(purchase: Purchase) {
-        viewModel.deletePurchase(purchase)
-        adapter.deletePurchase(purchase)
+
+        val dialogBinding = CustomDialogDeleteBinding.inflate(layoutInflater)
+        val dialog = AlertDialog.Builder(requireContext())
+            .setView(dialogBinding.root)
+            .create()
+        dialog.setCanceledOnTouchOutside(false)
+        dialog.window?.setBackgroundDrawable(getDrawable(requireContext(),R.drawable.background_alert_delete))
+        dialog.window?.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        dialog.setOnShowListener {
+            dialogBinding.buttonNo.setOnClickListener {
+                dialog.dismiss()
+
+            }
+            dialogBinding.buttonYes.setOnClickListener {
+                dialog.dismiss()
+                viewModel.deletePurchase(purchase)
+                adapter.deletePurchase(purchase)
+            }
+
+        }
+        dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+        dialog.show()
     }
+
 
 
 }

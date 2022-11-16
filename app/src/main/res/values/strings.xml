@@ -19,6 +19,10 @@
     <string name="currency_sell">Цена валюты:</string>
     <string name="currency_cost">15.25</string>
     <string name="currency_quantity">Количество:</string>
+    <string name="warning_dialog">Предупреждение</string>
+    <string name="description_dialog">Вы действительно хотите удалить элемент?</string>
+    <string name="no_dialog">NO</string>
+    <string name="yes_dialog">YES</string>
     <string name="empty_chart">За данный период
         времени покупки отсутствуют</string>
 
