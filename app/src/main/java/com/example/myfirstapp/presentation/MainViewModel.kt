@@ -3,6 +3,7 @@ package com.example.myfirstapp.presentation
 
 import PurchaseUsecase
 import android.util.Log
+import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -15,7 +16,13 @@ import java.util.*
 class MainViewModel(private val purchaseUsecase : PurchaseUsecase) : ViewModel() {
 
     var startListLiveData = MutableLiveData<List<Purchase>>()
+    var date = MutableLiveData<String>()
+    var position = 0
 
+    private val dateWeek = getCurrentDateDay().substringBefore(',').toInt() - 7
+    private val sdfWeek = SimpleDateFormat("$dateWeek - dd, MMM yyyy")
+    private val sdfMonth = SimpleDateFormat("MMM yyyy")
+    private val sdfYear = SimpleDateFormat("yyyy ГОД")
 
 
     init {
@@ -149,6 +156,25 @@ class MainViewModel(private val purchaseUsecase : PurchaseUsecase) : ViewModel()
         }
         return listOfPurchase
     }
+
+    private fun getCurrentDateDay(): String {                         // Функция для получения даты
+        val sdf = SimpleDateFormat("dd, MMM yyyy")
+        return sdf.format(Date()).toString()
+    }
+
+    fun connectSortsByTypeAndTime(purchaseTypes : Array<String>) {
+        when(date.value) {
+            getCurrentDateDay() -> setDataWithTypeToday(purchaseTypes[position])
+            sdfWeek.format(Date()).toString() -> setDataWithTypeWeek(purchaseTypes[position])
+            sdfMonth.format(Date()).toString() -> setDataWithTypeMonth(purchaseTypes[position])
+            sdfYear.format(Date()).toString() -> setDataWithTypeYear(purchaseTypes[position])
+        }
+    }
+    fun saveCurrentDate(dateOfTextView : String) {
+        date.value = dateOfTextView
+    }
+
+
 
 
 

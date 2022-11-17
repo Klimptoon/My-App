@@ -38,10 +38,7 @@ data class PurchaseEnt(
             date = purchase.date
         )
 
-        private fun getCurrentDateDay(): String {
-            val sdf = SimpleDateFormat("dd.MM.yyyy")
-            return sdf.format(Date())
-        }
+
     }
 
     }
