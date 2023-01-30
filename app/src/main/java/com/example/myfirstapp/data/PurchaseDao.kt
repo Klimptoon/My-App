@@ -18,4 +18,5 @@ interface PurchaseDao {
 
     @Delete
     suspend fun deletePurchase(purchase: PurchaseEnt) : Int
+
 }

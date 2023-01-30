@@ -48,6 +48,7 @@ class PurchaseAdapter(private val listener : PurchaseAdapterListener)
 
     }
 
+
     override fun getItemCount(): Int {
         return purchaseList.size
     }

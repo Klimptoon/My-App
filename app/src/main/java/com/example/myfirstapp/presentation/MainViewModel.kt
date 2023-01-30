@@ -5,6 +5,7 @@ import PurchaseUsecase
 import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,8 +17,11 @@ import java.util.*
 class MainViewModel(private val purchaseUsecase : PurchaseUsecase) : ViewModel() {
 
     var startListLiveData = MutableLiveData<List<Purchase>>()
-    var date = MutableLiveData<String>()
+    var lastList = MutableLiveData<List<Purchase>>()
+    var date = getCurrentDateDay()
     var position = 0
+    private var currentDay = ""
+    var type = MutableLiveData<String>()
 
     private val dateWeek = getCurrentDateDay().substringBefore(',').toInt() - 7
     private val sdfWeek = SimpleDateFormat("$dateWeek - dd, MMM yyyy")
@@ -32,6 +36,9 @@ class MainViewModel(private val purchaseUsecase : PurchaseUsecase) : ViewModel()
     override fun onCleared() {
         super.onCleared()
     }
+
+
+
 
 
     fun addPurchase(purchase: Purchase) {                               //функция для добавления элементов в список
@@ -49,7 +56,12 @@ class MainViewModel(private val purchaseUsecase : PurchaseUsecase) : ViewModel()
     fun setStartData() {                                                    //функция для установления первых данных после открытия приложения
         viewModelScope.launch {
             val listOfPurchase = purchaseUsecase.getStartData()
-            startListLiveData.value = sortToday(listOfPurchase)
+            when(date) {
+                sdfWeek.toString() -> sortWeek(listOfPurchase)
+                sdfMonth.toString() -> sortWeek(listOfPurchase)
+                sdfYear.toString() -> sortWeek(listOfPurchase)
+                else -> sortToday(listOfPurchase)
+            }
         }
     }
     fun setWeekData() {                                                    //функция для установления данных если выбрали период неделя
@@ -163,7 +175,7 @@ class MainViewModel(private val purchaseUsecase : PurchaseUsecase) : ViewModel()
     }
 
     fun connectSortsByTypeAndTime(purchaseTypes : Array<String>) {
-        when(date.value) {
+        when(date) {
             getCurrentDateDay() -> setDataWithTypeToday(purchaseTypes[position])
             sdfWeek.format(Date()).toString() -> setDataWithTypeWeek(purchaseTypes[position])
             sdfMonth.format(Date()).toString() -> setDataWithTypeMonth(purchaseTypes[position])
@@ -171,12 +183,6 @@ class MainViewModel(private val purchaseUsecase : PurchaseUsecase) : ViewModel()
         }
     }
     fun saveCurrentDate(dateOfTextView : String) {
-        date.value = dateOfTextView
+        date = dateOfTextView
     }
-
-
-
-
-
-
 }

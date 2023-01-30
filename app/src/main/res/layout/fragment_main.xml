@@ -59,7 +59,7 @@
             android:id="@+id/textViewDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="24:02:2022"
+            android:text=""
             android:textColor="@color/white"
             android:textSize="18dp"
             android:layout_marginStart="20dp"
@@ -126,11 +126,6 @@
         app:reverseLayout="true"
         app:stackFromEnd="true" />
 
-
-
-
-
-
     <TextView
         android:id="@+id/view_under_toolbar"
         android:layout_width="0dp"
@@ -140,19 +135,20 @@
         android:background="@drawable/header_background"
         app:layout_constraintTop_toBottomOf="@id/toolbar"/>
 
-    <EditText
-        android:id="@+id/et_search"
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/search"
         android:layout_width="0dp"
         android:layout_height="40dp"
         android:background="@drawable/white_rectangle_background"
         android:layout_marginStart="40dp"
         android:layout_marginEnd="40dp"
-        android:paddingStart="20dp"
         android:maxLines="1"
         android:imeOptions="actionDone"
+        app:queryBackground="@android:color/transparent"
         android:inputType="textPersonName|textCapWords"
         android:maxLength="30"
-        android:hint="Search elements"
+        app:queryHint="Search elements..."
+        app:iconifiedByDefault="false"
         app:layout_constraintStart_toStartOf="@id/view_under_toolbar"
         app:layout_constraintEnd_toEndOf="@id/view_under_toolbar"
         app:layout_constraintTop_toTopOf="@id/view_under_toolbar"

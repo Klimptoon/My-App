@@ -44,14 +44,12 @@ class ChartFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = FragmentChartBinding.inflate(inflater, container, false)
-        Log.d("ff", "onCreateView - Chart fragment")
         binding.tv.text = sharedViewModelForMainChart.dateLiveData.value.toString()
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.d("ff", "onViewCreated - Chart fragment")
         init()
     }
 
@@ -105,15 +103,12 @@ class ChartFragment : Fragment() {
     }
 
     private fun loadDataInPieChart() {
-
-
         when(binding.tv.text.toString()) {
             getCurrentDateDay() -> viewModel.sortByTypesDay()
             sdfWeek.format(Date()).toString() -> viewModel.sortByTypesWeek()
             sdfMonth.format(Date()).toString() -> viewModel.sortByTypesMonth()
             sdfYear.format(Date()).toString() -> viewModel.sortByTypesYear()
         }
-
     }
 
     private fun drawGraphic(entries : MutableList<PieEntry>){
@@ -136,5 +131,9 @@ class ChartFragment : Fragment() {
         pieChart.invalidate()
 
         pieChart.animateY(1400, Easing.EaseInQuad)
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        Log.d("ff", "OnSaveInstanceState вызвалось в чарт фрагменте")
     }
 }

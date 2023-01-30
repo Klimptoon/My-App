@@ -36,4 +36,8 @@ class CourseFragment : Fragment() {
         return binding.root
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        Log.d("ff", "OnSaveInstanceState вызвалось в курс фрагменте")
+    }
+
 }
