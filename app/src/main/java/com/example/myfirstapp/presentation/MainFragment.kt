@@ -1,5 +1,6 @@
 package com.example.myfirstapp.presentation
 
+import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
@@ -45,7 +46,7 @@ class MainFragment : Fragment(), PurchaseAdapterListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d("ff", "Вызвался onCreate")
+        Log.d("mm", "Вызвался onCreate в мейн фрагменте")
 
     }
 
@@ -58,19 +59,29 @@ class MainFragment : Fragment(), PurchaseAdapterListener {
         binding = FragmentMainBinding.inflate(inflater, container, false)
 
 
-
+        Log.d("mm", "Вызвался onCreateView в мейн фрагменте")
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        Log.d("mm", "Вызвался onViewCreated в мейн фрагменте")
         init()
 
     }
 
+    override fun onResume() {
+        super.onResume()
+        val purchaseTypes = resources.getStringArray(R.array.types)
+        Log.d("mm", purchaseTypes.size.toString())
+        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, purchaseTypes)
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        binding.autoCompleteTextViewMain.setAdapter(arrayAdapter)
+    }
+
+
+
     private fun init() {
-        Log.d("ff", "init вызвался")
         viewModel = ViewModelProvider(
             this,
             MainViewModelFactory(requireContext())
@@ -93,6 +104,7 @@ class MainFragment : Fragment(), PurchaseAdapterListener {
         setUpSearchView()
 
 
+
         startMainSpinner()                 //запуск спинера с выбором покупки(еда , дом и т.д)
 
         binding.buttonAdd.setOnClickListener {
@@ -105,12 +117,31 @@ class MainFragment : Fragment(), PurchaseAdapterListener {
         }
     }
 
+//    private fun startSpinner() {
+//        val purchaseTypes = resources.getStringArray(R.array.types)
+//        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, purchaseTypes)
+//        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+//        binding.spinner.adapter = arrayAdapter
+//        binding.spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+//            override fun onItemSelected(adapterView: AdapterView<*>?,
+//                                        view: View?,
+//                                        position: Int,
+//                                        item_id: Long) {
+//                viewModel.position = position
+//                viewModel.type.value = binding.autoCompleteTextViewMain.text.toString()
+//                viewModel.connectSortsByTypeAndTime(purchaseTypes)
+//            }
+//
+//            override fun onNothingSelected(p0: AdapterView<*>?) {
+//
+//            }
+//
+//        }
+//    }
+
 
     private fun startMainSpinner() {                                   //Функция для выбора типа покупки
         val purchaseTypes = resources.getStringArray(R.array.types)
-        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, purchaseTypes)
-        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.autoCompleteTextViewMain.setAdapter(arrayAdapter)
         binding.autoCompleteTextViewMain.onItemClickListener =
             object : AdapterView.OnItemClickListener {
                 override fun onItemClick(
@@ -305,9 +336,50 @@ class MainFragment : Fragment(), PurchaseAdapterListener {
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
-        Log.d("ff", "OnSaveInstanceState вызвалось в мейн фрагменте")
+        Log.d("mm", "OnSaveInstanceState вызвалось в мейн фрагменте")
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        Log.d("mm", "OnAttach вызвалось в мейн фрагменте")
     }
 
 
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        Log.d("mm", "onActivityCreated вызвалось в мейн фрагменте")
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Log.d("mm", "onStart вызвалось в мейн фрагменте")
+    }
+
+
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("mm", "onPause вызвалось в мейн фрагменте")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("mm", "onStop вызвалось в мейн фрагменте")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d("mm", "onDestroyView вызвалось в мейн фрагменте")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.d("mm", "onDestroy вызвалось в мейн фрагменте")
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        Log.d("mm", "onDetach вызвалось в мейн фрагменте")
+    }
 
 }
