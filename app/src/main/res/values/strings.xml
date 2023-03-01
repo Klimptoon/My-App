@@ -25,6 +25,7 @@
     <string name="yes_dialog">YES</string>
     <string name="empty_chart">За данный период
         времени покупки отсутствуют</string>
+    <string name="internet_problems">Нет подключения к сети</string>
 
 
 
