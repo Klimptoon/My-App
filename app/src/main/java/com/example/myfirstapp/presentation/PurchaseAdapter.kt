@@ -1,23 +1,16 @@
 package com.example.myfirstapp.presentation
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myfirstapp.R
 import com.example.myfirstapp.databinding.RecyclerItemBinding
-import kotlinx.android.synthetic.main.recycler_item.view.*
 
 class PurchaseAdapter(private val listener : PurchaseAdapterListener)
     : RecyclerView.Adapter<PurchaseAdapter.PurchaseViewHolder>() {
 
-
     private val purchaseList = ArrayList<Purchase>()
-
-
-
 
     class PurchaseViewHolder(item: View) : RecyclerView.ViewHolder(item)     {
         private val binding = RecyclerItemBinding.bind(item)
@@ -31,9 +24,6 @@ class PurchaseAdapter(private val listener : PurchaseAdapterListener)
         }
     }
 
-
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PurchaseViewHolder {
 
         val view =
@@ -44,10 +34,7 @@ class PurchaseAdapter(private val listener : PurchaseAdapterListener)
 
     override fun onBindViewHolder(holder: PurchaseViewHolder, position: Int) {
         holder.init(purchaseList[position] ,  listener)
-
-
     }
-
 
     override fun getItemCount(): Int {
         return purchaseList.size

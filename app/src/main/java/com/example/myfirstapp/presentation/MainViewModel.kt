@@ -2,10 +2,6 @@ package com.example.myfirstapp.presentation
 
 
 import PurchaseUsecase
-import android.util.Log
-import android.widget.TextView
-import android.widget.Toast
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,31 +10,17 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MainViewModel(private val purchaseUsecase : PurchaseUsecase) : ViewModel() {
+class MainViewModel(private val purchaseUsecase: PurchaseUsecase) : ViewModel() {
 
     var startListLiveData = MutableLiveData<List<Purchase>>()
-    var lastList = MutableLiveData<List<Purchase>>()
     var date = getCurrentDateDay()
     var position = 0
-    private var currentDay = ""
     var type = MutableLiveData<String>()
 
     private val dateWeek = getCurrentDateDay().substringBefore(',').toInt() - 7
     private val sdfWeek = SimpleDateFormat("$dateWeek - dd, MMM yyyy")
     private val sdfMonth = SimpleDateFormat("MMM yyyy")
     private val sdfYear = SimpleDateFormat("yyyy ГОД")
-
-
-    init {
-
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-    }
-
-
-
 
 
     fun addPurchase(purchase: Purchase) {                               //функция для добавления элементов в список
@@ -56,7 +38,7 @@ class MainViewModel(private val purchaseUsecase : PurchaseUsecase) : ViewModel()
     fun setStartData() {                                                    //функция для установления первых данных после открытия приложения
         viewModelScope.launch {
             val listOfPurchase = purchaseUsecase.getStartData()
-            when(date) {
+            when (date) {
                 sdfWeek.toString() -> sortWeek(listOfPurchase)
                 sdfMonth.toString() -> sortWeek(listOfPurchase)
                 sdfYear.toString() -> sortWeek(listOfPurchase)
@@ -64,18 +46,21 @@ class MainViewModel(private val purchaseUsecase : PurchaseUsecase) : ViewModel()
             }
         }
     }
+
     fun setWeekData() {                                                    //функция для установления данных если выбрали период неделя
         viewModelScope.launch {
             val listOfPurchase = purchaseUsecase.getStartData()
             startListLiveData.value = sortWeek(listOfPurchase)
         }
     }
+
     fun setMonthData() {                                                 //функция для установления данных если выбрали период месяц
         viewModelScope.launch {
             val listOfPurchase = purchaseUsecase.getStartData()
             startListLiveData.value = sortMonth(listOfPurchase)
         }
     }
+
     fun setYearData() {                                                    //функция для установления данных если выбрали период год
         viewModelScope.launch {
             val listOfPurchase = purchaseUsecase.getStartData()
@@ -83,13 +68,14 @@ class MainViewModel(private val purchaseUsecase : PurchaseUsecase) : ViewModel()
         }
     }
 
-    fun setDataWithType(type : String) {                                  //функция для установки данных по типу покупки
+    fun setDataWithType(type: String) {                                  //функция для установки данных по типу покупки
         viewModelScope.launch {
             val listOfPurchase = purchaseUsecase.getData(type)
             startListLiveData.value = listOfPurchase
         }
     }
-    fun setDataWithTypeToday(type : String) {                                  //функция для установки данных по типу покупки
+
+    fun setDataWithTypeToday(type: String) {                                  //функция для установки данных по типу покупки
         viewModelScope.launch {
             val listOfPurchase = purchaseUsecase.getData(type)
             val sortedList = sortToday(listOfPurchase)
@@ -97,21 +83,23 @@ class MainViewModel(private val purchaseUsecase : PurchaseUsecase) : ViewModel()
         }
     }
 
-    fun setDataWithTypeWeek(type : String) {                                  //функция для установки данных по типу покупки
+    fun setDataWithTypeWeek(type: String) {                                  //функция для установки данных по типу покупки
         viewModelScope.launch {
             val listOfPurchase = purchaseUsecase.getData(type)
             val sortedList = sortWeek(listOfPurchase)
             startListLiveData.value = sortedList
         }
     }
-    fun setDataWithTypeMonth(type : String) {                                  //функция для установки данных по типу покупки
+
+    fun setDataWithTypeMonth(type: String) {                                  //функция для установки данных по типу покупки
         viewModelScope.launch {
             val listOfPurchase = purchaseUsecase.getData(type)
             val sortedList = sortMonth(listOfPurchase)
             startListLiveData.value = sortedList
         }
     }
-    fun setDataWithTypeYear(type : String) {                                  //функция для установки данных по типу покупки
+
+    fun setDataWithTypeYear(type: String) {                                  //функция для установки данных по типу покупки
         viewModelScope.launch {
             val listOfPurchase = purchaseUsecase.getData(type)
             val sortedList = sortYear(listOfPurchase)
@@ -120,49 +108,60 @@ class MainViewModel(private val purchaseUsecase : PurchaseUsecase) : ViewModel()
     }
 
 
-    fun sortToday(purchaseList : List<Purchase>) : List<Purchase> {   //функции для сортировки списка по выбранному периоду времени
+    fun sortToday(purchaseList: List<Purchase>): List<Purchase> {   //функции для сортировки списка по выбранному периоду времени
         val sdf = SimpleDateFormat("dd.MM.yyyy")
         val listOfPurchase = mutableListOf<Purchase>()
-        for(purchase in purchaseList) {
-            if(purchase.date == sdf.format(Date())) {
+        for (purchase in purchaseList) {
+
                 listOfPurchase.add(purchase)
-            }
+            
         }
         return listOfPurchase
     }
-    fun sortWeek(purchaseList : List<Purchase>) : List<Purchase>  {
+
+    fun sortWeek(purchaseList: List<Purchase>): List<Purchase> {
         val sdf = SimpleDateFormat("dd.MM.yyyy")
         val listOfPurchase = mutableListOf<Purchase>()
-        for(purchase in purchaseList) {
-            if(purchase.date.substringAfter('.') == sdf.format(Date()).substringAfter('.')) {
-                if(purchase.date.substringBefore('.').toInt() in sdf.format(Date()).substringBefore('.').toInt() - 7..sdf.format(
+        for (purchase in purchaseList) {
+            if (purchase.date.substringAfter('.') == sdf.format(Date()).substringAfter('.')) {
+                if (purchase.date.substringBefore('.').toInt() in sdf.format(Date())
+                        .substringBefore('.').toInt() - 7..sdf.format(
                         Date()
-                    ).substringBefore('.').toInt()) {
+                    ).substringBefore('.').toInt()
+                ) {
                     listOfPurchase.add(purchase)
                 }
             }
         }
         return listOfPurchase
     }
-    fun sortMonth(purchaseList : List<Purchase>) : List<Purchase>  {
+
+    fun sortMonth(purchaseList: List<Purchase>): List<Purchase> {
         val sdf = SimpleDateFormat("dd.MM.yyyy")
         val listOfPurchase = mutableListOf<Purchase>()
-        for(purchase in purchaseList) {
-            if(purchase.date.substringAfterLast('.') == sdf.format(Date()).substringAfterLast('.')) {
-                if(purchase.date.substringAfter('.').substringBeforeLast('.').toInt() == sdf.format(
+        for (purchase in purchaseList) {
+            if (purchase.date.substringAfterLast('.') == sdf.format(Date())
+                    .substringAfterLast('.')
+            ) {
+                if (purchase.date.substringAfter('.').substringBeforeLast('.')
+                        .toInt() == sdf.format(
                         Date()
-                    ).substringAfter('.').substringBeforeLast('.').toInt()) {
+                    ).substringAfter('.').substringBeforeLast('.').toInt()
+                ) {
                     listOfPurchase.add(purchase)
                 }
             }
         }
         return listOfPurchase
     }
-    fun sortYear(purchaseList : List<Purchase>) : List<Purchase>  {
+
+    fun sortYear(purchaseList: List<Purchase>): List<Purchase> {
         val sdf = SimpleDateFormat("dd.MM.yyyy")
         val listOfPurchase = mutableListOf<Purchase>()
-        for(purchase in purchaseList) {
-            if(purchase.date.substringAfterLast('.') == sdf.format(Date()).substringAfterLast('.')) {
+        for (purchase in purchaseList) {
+            if (purchase.date.substringAfterLast('.') == sdf.format(Date())
+                    .substringAfterLast('.')
+            ) {
                 listOfPurchase.add(purchase)
             }
         }
@@ -174,15 +173,16 @@ class MainViewModel(private val purchaseUsecase : PurchaseUsecase) : ViewModel()
         return sdf.format(Date()).toString()
     }
 
-    fun connectSortsByTypeAndTime(purchaseTypes : Array<String>) {
-        when(date) {
+    fun connectSortsByTypeAndTime(purchaseTypes: Array<String>) {
+        when (date) {
             getCurrentDateDay() -> setDataWithTypeToday(purchaseTypes[position])
             sdfWeek.format(Date()).toString() -> setDataWithTypeWeek(purchaseTypes[position])
             sdfMonth.format(Date()).toString() -> setDataWithTypeMonth(purchaseTypes[position])
             sdfYear.format(Date()).toString() -> setDataWithTypeYear(purchaseTypes[position])
         }
     }
-    fun saveCurrentDate(dateOfTextView : String) {
+
+    fun saveCurrentDate(dateOfTextView: String) {
         date = dateOfTextView
     }
 }

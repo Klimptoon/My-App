@@ -4,11 +4,11 @@ import com.google.gson.annotations.SerializedName
 
 data class Currency(
     @SerializedName("CharCode")
-    val charCode : String,
+    val charCode: String,
     @SerializedName("Nominal")
     val nominal: Int,
     @SerializedName("Name")
-    val name : String,
+    val name: String,
     @SerializedName("Value")
-    val value : Double,
+    val value: Double,
 )

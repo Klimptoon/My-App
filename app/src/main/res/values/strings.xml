@@ -26,6 +26,7 @@
     <string name="empty_chart">За данный период
         времени покупки отсутствуют</string>
     <string name="internet_problems">Нет подключения к сети</string>
+    <string name="try_again">Повторить попытку</string>
 
 
 
@@ -38,7 +39,7 @@
         <item>Прочее</item>
     </string-array>
 
-    <string-array name="types_for_ratio">
+    <string-array name="types2">
         <item>Одежда</item>
         <item>Еда</item>
         <item>Отдых</item>

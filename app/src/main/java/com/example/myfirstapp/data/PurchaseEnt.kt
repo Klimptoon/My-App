@@ -4,22 +4,18 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.myfirstapp.presentation.Purchase
-import java.text.SimpleDateFormat
-import java.util.*
-
 
 @Entity(tableName = "purchase_table")
 data class PurchaseEnt(
     @PrimaryKey(autoGenerate = true)
-    val id : Int,
-    @ColumnInfo(name = "image_id") val imageId : Int,
+    val id: Int,
+    @ColumnInfo(name = "image_id") val imageId: Int,
     val type: String,
     val title: String,
     val cost: String,
     val date: String
-)
-{
-    fun toPurchase() : Purchase = Purchase(
+) {
+    fun toPurchase(): Purchase = Purchase(
         id = id,
         imageId = imageId,
         type = type,
@@ -37,9 +33,6 @@ data class PurchaseEnt(
             cost = purchase.cost,
             date = purchase.date
         )
-
-
     }
-
-    }
+}
 

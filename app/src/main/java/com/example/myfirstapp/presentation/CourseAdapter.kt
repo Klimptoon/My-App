@@ -7,16 +7,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myfirstapp.R
 import com.example.myfirstapp.databinding.ItemCourseBinding
 import com.example.myfirstapp.network.Currency
-import kotlinx.android.synthetic.main.item_course.view.*
 
 class CourseAdapter : RecyclerView.Adapter<CourseAdapter.CourseViewHolder>() {
 
     var currencyList = mutableListOf<Currency>()
 
 
-    class CourseViewHolder(item : View) : RecyclerView.ViewHolder(item) {
+    class CourseViewHolder(item: View) : RecyclerView.ViewHolder(item) {
         private val binding = ItemCourseBinding.bind(item)
-        fun bind(currency : Currency) = with(binding) {
+        fun bind(currency: Currency) = with(binding) {
             tvCurrencyName.text = "${currency.charCode} - ${currency.name}"
             tvCurrencyQuantity.text = currency.nominal.toString()
             tvCurrencyCost.text = "${currency.value} российских рублей "

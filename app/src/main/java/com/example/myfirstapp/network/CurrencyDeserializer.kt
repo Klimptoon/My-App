@@ -12,7 +12,6 @@ class CurrencyDeserializer : JsonDeserializer<CurrencyList> {
         "INR", "KZT", "CAD", "KGS", "CNY", "MDL", "NOK", "PLN", "RON", "SGD", "TJS", "TRY", "UZS", "CZK",
         "SEK", "CHF", "ZAR", "KRW", "JPY")
 
-
     override fun deserialize(
         json: JsonElement?,
         typeOfT: Type?,
@@ -30,8 +29,6 @@ class CurrencyDeserializer : JsonDeserializer<CurrencyList> {
             val value = valute.get("Value").asDouble
             list.add(Currency(charCode, nominal, name, value))
         }
-
-
         return CurrencyList(list)
     }
 }

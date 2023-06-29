@@ -6,12 +6,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.myfirstapp.R
 import com.github.mikephil.charting.data.PieEntry
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.lang.NullPointerException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -46,6 +44,7 @@ class ChartViewModel(private val purchaseUseCase: PurchaseUsecase) : ViewModel()
             startLiveData.value = listPieEntry
         }
     }
+
     fun sortByTypesWeek() {                                         //функция для заполнения списка PieEntry и передачей списка в лайв дату
         var valueOfType = 0.0f
         val listPieEntry = mutableListOf<PieEntry>()
@@ -70,6 +69,7 @@ class ChartViewModel(private val purchaseUseCase: PurchaseUsecase) : ViewModel()
             startLiveData.value = listPieEntry
         }
     }
+
     fun sortByTypesMonth() {                                         //функция для заполнения списка PieEntry и передачей списка в лайв дату
         var valueOfType = 0.0f
         val listPieEntry = mutableListOf<PieEntry>()
@@ -94,6 +94,7 @@ class ChartViewModel(private val purchaseUseCase: PurchaseUsecase) : ViewModel()
             startLiveData.value = listPieEntry
         }
     }
+
     fun sortByTypesYear() {                                         //функция для заполнения списка PieEntry и передачей списка в лайв дату
         var valueOfType = 0.0f
         val listPieEntry = mutableListOf<PieEntry>()
@@ -120,50 +121,60 @@ class ChartViewModel(private val purchaseUseCase: PurchaseUsecase) : ViewModel()
     }
 
 
-
-    fun sortToday(purchaseList : List<Purchase>) : List<Purchase> {   //функции для сортировки списка по выбранному периоду времени
+    fun sortToday(purchaseList: List<Purchase>): List<Purchase> {   //функции для сортировки списка по выбранному периоду времени
         val sdf = SimpleDateFormat("dd.MM.yyyy")
         val listOfPurchase = mutableListOf<Purchase>()
-        for(purchase in purchaseList) {
-            if(purchase.date == sdf.format(Date())) {
+        for (purchase in purchaseList) {
+            if (purchase.date == sdf.format(Date())) {
                 listOfPurchase.add(purchase)
             }
         }
         return listOfPurchase
     }
-    fun sortWeek(purchaseList : List<Purchase>) : List<Purchase>  {
+
+    fun sortWeek(purchaseList: List<Purchase>): List<Purchase> {
         val sdf = SimpleDateFormat("dd.MM.yyyy")
         val listOfPurchase = mutableListOf<Purchase>()
-        for(purchase in purchaseList) {
-            if(purchase.date.substringAfter('.') == sdf.format(Date()).substringAfter('.')) {
-                if(purchase.date.substringBefore('.').toInt() in sdf.format(Date()).substringBefore('.').toInt() - 7..sdf.format(
+        for (purchase in purchaseList) {
+            if (purchase.date.substringAfter('.') == sdf.format(Date()).substringAfter('.')) {
+                if (purchase.date.substringBefore('.').toInt() in sdf.format(Date())
+                        .substringBefore('.').toInt() - 7..sdf.format(
                         Date()
-                    ).substringBefore('.').toInt()) {
+                    ).substringBefore('.').toInt()
+                ) {
                     listOfPurchase.add(purchase)
                 }
             }
         }
         return listOfPurchase
     }
-    fun sortMonth(purchaseList : List<Purchase>) : List<Purchase>  {
+
+    fun sortMonth(purchaseList: List<Purchase>): List<Purchase> {
         val sdf = SimpleDateFormat("dd.MM.yyyy")
         val listOfPurchase = mutableListOf<Purchase>()
-        for(purchase in purchaseList) {
-            if(purchase.date.substringAfterLast('.') == sdf.format(Date()).substringAfterLast('.')) {
-                if(purchase.date.substringAfter('.').substringBeforeLast('.').toInt() == sdf.format(
+        for (purchase in purchaseList) {
+            if (purchase.date.substringAfterLast('.') == sdf.format(Date())
+                    .substringAfterLast('.')
+            ) {
+                if (purchase.date.substringAfter('.').substringBeforeLast('.')
+                        .toInt() == sdf.format(
                         Date()
-                    ).substringAfter('.').substringBeforeLast('.').toInt()) {
+                    ).substringAfter('.').substringBeforeLast('.').toInt()
+                ) {
                     listOfPurchase.add(purchase)
                 }
             }
         }
         return listOfPurchase
     }
-    fun sortYear(purchaseList : List<Purchase>) : List<Purchase>  {
+
+    fun sortYear(purchaseList: List<Purchase>): List<Purchase> {
         val sdf = SimpleDateFormat("dd.MM.yyyy")
         val listOfPurchase = mutableListOf<Purchase>()
-        for(purchase in purchaseList) {
-            if(purchase.date.substringAfterLast('.') == sdf.format(Date()).substringAfterLast('.')) {
+        for (purchase in purchaseList) {
+            if (purchase.date.substringAfterLast('.') == sdf.format(Date())
+                    .substringAfterLast('.')
+            ) {
                 listOfPurchase.add(purchase)
             }
         }

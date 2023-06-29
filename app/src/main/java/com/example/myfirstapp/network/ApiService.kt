@@ -6,6 +6,6 @@ import retrofit2.http.GET
 interface ApiService {
 
     @GET("daily_json.js")
-    suspend fun getCurrencyCourse() : Response<CurrencyList>
+    suspend fun getCurrencyCourse(): Response<CurrencyList>
 
 }

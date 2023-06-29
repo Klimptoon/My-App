@@ -9,7 +9,6 @@ import java.lang.reflect.Type
 
 class RetrofitInstance {
 
-
     companion object {
         private fun createGsonConverter(type: Type, typeAdapter: Any): Converter.Factory? {
             val gsonBuilder = GsonBuilder()
@@ -27,10 +26,5 @@ class RetrofitInstance {
                 .build()
         }
     }
-
-
-
-
-
 
 }

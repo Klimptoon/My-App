@@ -8,18 +8,18 @@ import androidx.room.RoomDatabase
 @Database(entities = [PurchaseEnt::class], version = 1, exportSchema = false)
 abstract class PurchaseDatabase : RoomDatabase() {
 
-    abstract fun getPurchaseDao() : PurchaseDao
+    abstract fun getPurchaseDao(): PurchaseDao
 
-    companion object{
-        private var database: PurchaseDatabase ?= null
+    companion object {
+        private var database: PurchaseDatabase? = null
 
         @Synchronized
-        fun getInstance(context: Context) : PurchaseDatabase {
-            return if(database==null) {
+        fun getInstance(context: Context): PurchaseDatabase {
+            return if (database == null) {
                 database = Room.databaseBuilder(context, PurchaseDatabase::class.java, "db")
                     .build()
                 database as PurchaseDatabase
-            }else {
+            } else {
                 database as PurchaseDatabase
             }
         }
